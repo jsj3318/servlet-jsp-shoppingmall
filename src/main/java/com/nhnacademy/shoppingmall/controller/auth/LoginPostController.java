@@ -11,8 +11,10 @@ import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
-@RequestMapping(method = RequestMapping.Method.POST,value = "/loginAction.do")
+@Slf4j
+@RequestMapping(method = RequestMapping.Method.POST,value = {"/loginAction.do"})
 public class LoginPostController implements BaseController {
 
     private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
@@ -28,6 +30,7 @@ public class LoginPostController implements BaseController {
         session.setAttribute("user", user);
 
         DbConnectionThreadLocal.reset();
+        log.debug("{} 로그인 됨", user.getUserId());
 
         return "shop/main/index";
     }

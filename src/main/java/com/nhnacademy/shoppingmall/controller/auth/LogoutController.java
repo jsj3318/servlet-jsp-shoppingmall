@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@RequestMapping(method = RequestMapping.Method.POST, value="/logoutAction.do")
+@RequestMapping(method = RequestMapping.Method.POST, value={"/logoutAction.do"})
 public class LogoutController implements BaseController {
     //todo#13-3 로그아웃 구현
 
@@ -16,6 +16,6 @@ public class LogoutController implements BaseController {
         if(session != null){
             session.invalidate();
         }
-        return "index.do";
+        return "redirect:/index.do";
     }
 }

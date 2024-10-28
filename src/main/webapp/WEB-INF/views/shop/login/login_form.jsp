@@ -4,7 +4,7 @@
     <div class="p-2">
         <form method="post" action="/loginAction.do">
 
-            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            <h1 class="h3 mb-3 fw-normal">Sign in</h1>
 
             <div class="form-floating">
                 <input type="text" name="user_id" class="form-control" id="user_id" placeholder="회원 아이디" required>
@@ -18,7 +18,7 @@
 
             <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Sign in</button>
 
-            <p class="mt-5 mb-3 text-muted">© 2022-2024</p>
+            <p class="mt-5 mb-3 text-muted">© 2024-2024</p>
 
         </form>
     </div>

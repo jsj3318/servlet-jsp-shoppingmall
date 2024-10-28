@@ -1,3 +1,4 @@
+<%@ page import="com.nhnacademy.shoppingmall.user.domain.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" session="false" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
@@ -38,10 +39,30 @@
                         <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
                     </form>
 
+                    <%
+                        // 로그인 한 세션의 경우 - 이름 표시
+                        HttpSession session = request.getSession(false);
+                        User user = null;
+                        if(session != null) {
+                            user = (User) session.getAttribute("user");
+                        }
+                        if(user != null){
+                    %>
+                    <div class="text-end d-flex align-items-center" style="height: 100%;">
+                        <p class="text-white mb-0"><%=user.getUserName()%> 님 환영합니다!</p>
+                    </div>
+                    <%
+                            // 로그인 안 한 경우 로그인, 회원가입 버튼 표시
+                        }else{
+                            %>
                     <div class="text-end">
                         <a class="btn btn-outline-light me-2" href="/login.do" >로그인</a>
                         <a class="btn btn-warning" href="signup.do" >회원가입</a>
                     </div>
+                    <%
+                        }
+                    %>
+
                 </div>
             </div>
         </header>

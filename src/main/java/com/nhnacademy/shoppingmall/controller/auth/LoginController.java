@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@RequestMapping(method = RequestMapping.Method.GET, value = "/login.do")
+@RequestMapping(method = RequestMapping.Method.GET, value = {"/login.do"})
 public class LoginController implements BaseController {
 
     @Override

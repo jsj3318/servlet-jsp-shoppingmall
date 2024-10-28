@@ -47,6 +47,13 @@ public class DbConnectionThreadLocal {
     public static void reset(){
 
         Connection connection = connectionThreadLocal.get();
+        if(connection == null){
+            return;
+        }
+
+//        while(connection == null){
+//            Thread.yield();
+//        }
 
         //todo#2-4 사용이 완료된 connection은 close를 호출하여 connection pool에 반환합니다.
         try {
