@@ -47,7 +47,7 @@
     </li>
 
     <li>
-        <form method="post" action="/userDelete.do">
+        <form method="post" action="/userDeleteAction.do">
             <button class="btn btn-danger ms-3" type="submit">회원탈퇴</button>
         </form>
     </li>
