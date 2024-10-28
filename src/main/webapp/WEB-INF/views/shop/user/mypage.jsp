@@ -52,9 +52,16 @@
     </li>
 
     <li>
-        <form method="post" action="/userDeleteAction.do">
+        <form method="post" action="/userDeleteAction.do" onsubmit="return confirmDelete()">
             <button class="btn btn-danger ms-3" type="submit">회원탈퇴</button>
         </form>
+
+        <script>
+            function confirmDelete(){
+                return confirm("진짜 탈퇴 하시게요?");
+            }
+        </script>
+
     </li>
 
  </ul>
