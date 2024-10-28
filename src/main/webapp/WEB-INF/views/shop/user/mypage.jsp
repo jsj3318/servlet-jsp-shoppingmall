@@ -48,7 +48,7 @@
 <ul>
 
     <li>
-        <a href="/userUpdate.do">회원 정보 수정</a>
+        <a href="/userUpdate.do" class="btn btn-primary">회원 정보 수정</a>
     </li>
 
     <li>

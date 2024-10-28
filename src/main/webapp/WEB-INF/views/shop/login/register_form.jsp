@@ -18,12 +18,17 @@
   <div class="p-2">
     <form method="post" action="${action}">
 
-      <h1 class="h3 mb-3 fw-normal">User Register</h1>
+      <h1 class="h3 mb-3 fw-normal">
+        <c:choose>
+          <c:when test="${empty user}">User Register</c:when>
+          <c:otherwise>User Update</c:otherwise>
+        </c:choose>
+      </h1>
 
       <div class="form-floating">
         <input type="text" name="user_id" class="form-control" id="user_id" placeholder="회원 아이디"
-               value="${user.userId}" <c:if test="${not empty student}">readonly</c:if> required>
-        <label for="user_id">회원아이디</label>
+               value="${user.userId}" <c:if test="${not empty user}">readonly</c:if> required>
+        <label for="user_id">회원 아이디</label>
       </div>
 
       <div class="form-floating">
