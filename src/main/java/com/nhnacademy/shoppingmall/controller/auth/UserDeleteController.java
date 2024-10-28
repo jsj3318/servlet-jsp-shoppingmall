@@ -9,6 +9,7 @@ import com.nhnacademy.shoppingmall.user.service.UserService;
 import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,12 +23,16 @@ public class UserDeleteController implements BaseController {
         DbConnectionThreadLocal.initialize();
         UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
-        User user = (User) req.getSession(false).getAttribute("user");
+        HttpSession session = req.getSession(false);
+        User user = (User) session.getAttribute("user");
 
         userService.deleteUser(user.getUserId());
         DbConnectionThreadLocal.reset();
 
         log.debug("{} 유저 탈퇴함", user.getUserId());
+
+        // 세션 제거
+        session.invalidate();
 
         return "shop/main/index";
 
