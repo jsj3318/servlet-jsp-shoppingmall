@@ -22,7 +22,12 @@
 
     <tr>
         <th>권한</th>
-        <td>${user.userAuth}</td>
+        <td>
+            <c:choose>
+                <c:when test="${user.userAuth == 'ROLE_ADMIN'}">관리자</c:when>
+                <c:otherwise>유저</c:otherwise>
+            </c:choose>
+        </td>
     </tr>
 
     <tr>
