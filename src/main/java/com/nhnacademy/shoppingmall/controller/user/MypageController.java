@@ -11,10 +11,12 @@ import com.nhnacademy.shoppingmall.user.domain.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
+@Slf4j
 @Transactional
 @RequestMapping(method = RequestMapping.Method.GET, value = {"/mypage.do"})
 public class MypageController implements BaseController {
@@ -46,7 +48,6 @@ public class MypageController implements BaseController {
 
         List<Address> addressList = addressService.getAddress(user.getUserId());
         req.setAttribute("addressList", addressList);
-
 
         return "shop/user/mypage";
     }

@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.controller.user.address;
 
+import com.nhnacademy.shoppingmall.address.domain.Address;
 import com.nhnacademy.shoppingmall.address.repository.impl.AddressRepositoryImpl;
 import com.nhnacademy.shoppingmall.address.service.AddressService;
 import com.nhnacademy.shoppingmall.address.service.impl.AddressServiceImpl;
@@ -23,10 +24,13 @@ public class AddAddressPostController implements BaseController {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
+        String userId = req.getParameter("user_id");
+        String newAddress = req.getParameter("newAddress");
 
+        addressService.saveAddress(
+                new Address(userId, newAddress)
+        );
 
-
-
-        return "shop/user/mypage";
+        return "redirect:/mypage.do";
     }
 }

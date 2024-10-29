@@ -34,7 +34,7 @@ public class AddressRepositoryImpl implements AddressRepository {
             ResultSet rs = psmt.executeQuery();
             List<Address> addressList = new ArrayList<>();
 
-            if(rs.next()){
+            while (rs.next()){
                 Address address = new Address(
                         rs.getString("user_id"),
                         rs.getString("address")

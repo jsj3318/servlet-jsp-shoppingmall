@@ -71,11 +71,50 @@
     <form action="addAddress.do" method="post" class="mb-3">
         <div class="input-group">
             <input type="text" name="newAddress" class="form-control" placeholder="새 주소 입력" required>
+            <input type="hidden" name="user_id" value="${user.userId}">
             <button type="submit" class="btn btn-primary">등록</button>
         </div>
     </form>
 
 <%--    주소 목록 출력 --%>
+    <table class="table table-striped">
+
+        <thead>
+        <tr>
+            <th>주소</th>
+            <th style="width: 120px;" class="text-end">관리</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <c:choose>
+            <c:when test="${empty addressList}">
+                <tr>
+                    <td colspan="2" class="text-center">등록된 주소가 없습니다. 주소를 등록 해 주세요.</td>
+                </tr>
+            </c:when>
+            <c:otherwise>
+                <c:forEach var="address" items="${addressList}">
+                    <tr>
+                        <td>${address.address}</td>
+                        <td class="text-end">
+                            <form action="updateAddress.do" method="post" style="display:inline;">
+                                <input type="hidden" name="address" value="${address.address}">
+                                <button type="submit" class="btn btn-sm btn-warning">수정</button>
+                            </form>
+                            <form action="deleteAddress.do" method="post" style="display:inline;">
+                                <input type="hidden" name="address" value="${address.address}">
+                                <button type="submit" class="btn btn-sm btn-danger">삭제</button>
+                            </form>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </c:otherwise>
+        </c:choose>
+        </tbody>
+
+    </table>
+
 
 </div>
 
