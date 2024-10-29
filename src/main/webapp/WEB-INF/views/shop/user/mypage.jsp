@@ -1,5 +1,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.nhnacademy.shoppingmall.address.domain.Address" %>
+<%@ page import="com.nhnacademy.shoppingmall.pointHistory.domain.PointHistory" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
@@ -53,11 +54,64 @@
         <td>${user.createdAt}</td>
     </tr>
 
+    <tr>
+        <th>최근 접속</th>
+        <td>${user.latestLoginAt}</td>
+    </tr>
+
 
     </tbody>
 </table>
 <a href="/userUpdate.do" class="btn btn-primary">회원 정보 수정</a>
 
+
+<%
+    List<PointHistory> pointHistoryList = (List<PointHistory>) request.getAttribute("pointHistoryList");
+%>
+
+<%--   포인트 내역 조회  --%>
+<div class="container mt-4">
+    <h2>포인트 이용 내역</h2>
+<table class="table table-striped">
+
+    <thead>
+    <tr>
+        <th>내역</th>
+        <th>포인트</th>
+        <th>일시</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <c:choose>
+        <c:when test="${empty pointHistoryList}">
+            <tr>
+                <td colspan="3" class="text-center">포인트 이용 내역이 없습니다.</td>
+            </tr>
+        </c:when>
+        <c:otherwise>
+            <c:forEach var="pointHistory" items="${pointHistoryList}">
+                <tr>
+                    <td>${pointHistory.reason}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${pointHistory.change_amount > 0}">
+                                <span style="color: green;">${pointHistory.change_amount}</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span style="color: red;">${pointHistory.change_amount}</span>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>${pointHistory.created_at}</td>
+                </tr>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
+    </tbody>
+
+</table>
+</div>
 
 <%--유저의 주소 목록 / 추가/ 수정/ 삭제 버튼--%>
 <%

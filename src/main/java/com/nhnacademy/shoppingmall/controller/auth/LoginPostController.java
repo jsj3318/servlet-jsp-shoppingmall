@@ -36,6 +36,10 @@ public class LoginPostController implements BaseController {
 
         // latest login 하루 지났을 경우 1만 포인트 적립
         LocalDateTime latestLogin = user.getLatestLoginAt();
+
+        // 테스트용 접속일 조작
+        //latestLogin = LocalDateTime.now().minusDays(3);
+
         if(LocalDate.now().isAfter(latestLogin.toLocalDate())){
             //하루가 지났다
             user.setUserPoint(user.getUserPoint() + 10000);
