@@ -103,9 +103,9 @@ public class UserRepositoryImpl implements UserRepository {
 
         try( PreparedStatement psmt = connection.prepareStatement(sql);
         ) {
-            psmt.setString(1, user.getUserId());
-            psmt.setString(2, user.getUserName());
-            psmt.setString(3, user.getUserPassword());
+            psmt.setString(1, user.getUserId().trim());
+            psmt.setString(2, user.getUserName().trim());
+            psmt.setString(3, user.getUserPassword().trim());
             psmt.setString(4, user.getUserBirth());
             psmt.setString(5, user.getUserAuth().toString());
             psmt.setInt(6, user.getUserPoint());
@@ -161,8 +161,8 @@ public class UserRepositoryImpl implements UserRepository {
 
         try( PreparedStatement psmt = connection.prepareStatement(sql);
         ) {
-            psmt.setString(1, user.getUserName());
-            psmt.setString(2, user.getUserPassword());
+            psmt.setString(1, user.getUserName().trim());
+            psmt.setString(2, user.getUserPassword().trim());
             psmt.setString(3, user.getUserBirth());
             psmt.setString(4, user.getUserAuth().toString());
             psmt.setInt(5, user.getUserPoint());
