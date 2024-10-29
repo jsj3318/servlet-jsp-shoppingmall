@@ -14,13 +14,14 @@ import java.util.Optional;
 
 @Slf4j
 public class AddressRepositoryImpl implements AddressRepository {
+
     @Override
     public List<Address> findByUserId(String userId) {
         Connection connection = DbConnectionThreadLocal.getConnection();
 
         // 최근에 등록한 주소를 먼저 보여주도록 키값을 기준으로 내림차순 정렬
         String sql = "select " +
-                "user_id, address" +
+                "user_id, address " +
                 "from address " +
                 "where user_id = ? " +
                 "order by address_id desc";
