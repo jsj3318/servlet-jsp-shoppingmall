@@ -15,12 +15,12 @@ import java.time.LocalDateTime;
 
 @RequestMapping(method = RequestMapping.Method.POST, value = {"/userUpdateAction.do"})
 public class UserUpdatePostController implements BaseController {
+        private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         // 회원 정보 수정 에서 정보 입력 후 수정 버튼 누름
         DbConnectionThreadLocal.initialize();
-        UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
         HttpSession session = req.getSession(false);
         User user = (User) session.getAttribute("user");

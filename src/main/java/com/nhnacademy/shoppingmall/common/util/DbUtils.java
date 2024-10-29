@@ -34,10 +34,9 @@ public class DbUtils {
         basicDataSource.setMinIdle(5);
 
         //todo#1-3 Validation Query를 설정하세요
-
-        basicDataSource.setMaxWait(Duration.ofSeconds(2));
-        basicDataSource.setValidationQuery("select 1");
         basicDataSource.setTestOnBorrow(true);
+        basicDataSource.setValidationQuery("select 1");
+        basicDataSource.setMaxWait(Duration.ofSeconds(2));
 
         //todo#1-4 적절히 변경하세요
         DATASOURCE = basicDataSource;

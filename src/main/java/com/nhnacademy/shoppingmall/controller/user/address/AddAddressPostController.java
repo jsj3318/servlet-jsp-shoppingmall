@@ -1,4 +1,4 @@
-package com.nhnacademy.shoppingmall.controller.auth;
+package com.nhnacademy.shoppingmall.controller.user.address;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
@@ -12,30 +12,20 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.time.LocalDateTime;
 
-@RequestMapping(method = RequestMapping.Method.POST, value = {"/userRegisterAction.do"})
-public class UserRegisterPostController implements BaseController {
-        private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+@RequestMapping(method = RequestMapping.Method.POST, value = {"/addAddress.do"})
+public class AddAddressPostController implements BaseController {
+//    private final
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        // 회원가입 화면에서 정보 모두 입력 후 등록
         DbConnectionThreadLocal.initialize();
 
-        User user = new User(
-                req.getParameter("user_id"),
-                req.getParameter("user_name"),
-                req.getParameter("user_password"),
-                req.getParameter("user_birth"),
-                User.Auth.ROLE_USER,
-                100_0000,
-                LocalDateTime.now(),
-                null
-        );
 
-        userService.saveUser(user);
+
+
 
         DbConnectionThreadLocal.reset();
 
-        return "shop/main/index";
+        return "shop/user/mypage";
     }
 }

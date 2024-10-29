@@ -15,13 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequestMapping(method = RequestMapping.Method.POST, value = {"/userDeleteAction.do"})
 public class UserDeleteController implements BaseController {
+        private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         // 회원 탈퇴 버튼 클릭 시 이벤트
         // db에서 유저 삭제 후 메인 으로
         DbConnectionThreadLocal.initialize();
-        UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
         HttpSession session = req.getSession(false);
         User user = (User) session.getAttribute("user");
