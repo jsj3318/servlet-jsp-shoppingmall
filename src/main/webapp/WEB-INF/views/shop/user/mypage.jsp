@@ -76,6 +76,37 @@
         </div>
     </form>
 
+
+<%--    주소 수정 창 --%>
+    <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAddressLabel">주소 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="updateAddress.do" method="post">
+                    <div class="modal-body">
+                        <!-- 유저 아이디 전달용 hidden -->
+                        <input type="hidden" name="user_id" id="user_id" value="${user.userId}">
+                        <!-- 기존 주소 값을 전달하기 위한 hidden 필드 -->
+                        <input type="hidden" name="originalAddress" id="originalAddress">
+                        <!-- 수정할 주소 입력 필드 -->
+                        <div class="mb-3">
+                            <label for="newAddress" class="form-label">새 주소</label>
+                            <input type="text" class="form-control" id="newAddress" name="newAddress" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary">수정 완료</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 <%--    주소 목록 출력 --%>
     <table class="table table-striped">
 
@@ -98,12 +129,17 @@
                     <tr>
                         <td>${address.address}</td>
                         <td class="text-end">
-                            <form action="updateAddress.do" method="post" style="display:inline;">
-                                <input type="hidden" name="address" value="${address.address}">
-                                <button type="submit" class="btn btn-sm btn-warning">수정</button>
-                            </form>
+                            <button
+                                    type="button"
+                                    class="btn btn-sm btn-warning"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editAddressModal"
+                                    onclick="setEditModalValues('${address.address}')">
+                                수정
+                            </button>
                             <form action="deleteAddress.do" method="post" style="display:inline;">
                                 <input type="hidden" name="address" value="${address.address}">
+                                <input type="hidden" name="user_id" value="${user.userId}">
                                 <button type="submit" class="btn btn-sm btn-danger">삭제</button>
                             </form>
                         </td>
@@ -114,6 +150,14 @@
         </tbody>
 
     </table>
+
+    <script>
+        // 모달에 기존 주소 값을 설정하는 함수
+        function setEditModalValues(address) {
+            document.getElementById("originalAddress").value = address;
+            document.getElementById("newAddress").value = address;
+        }
+    </script>
 
 
 </div>
