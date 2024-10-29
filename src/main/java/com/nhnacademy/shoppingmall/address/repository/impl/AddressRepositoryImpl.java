@@ -3,14 +3,12 @@ package com.nhnacademy.shoppingmall.address.repository.impl;
 import com.nhnacademy.shoppingmall.address.domain.Address;
 import com.nhnacademy.shoppingmall.address.repository.AddressRepository;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
-import com.nhnacademy.shoppingmall.user.domain.User;
+import com.nhnacademy.shoppingmall.common.page.Page;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 public class AddressRepositoryImpl implements AddressRepository {
@@ -144,4 +142,69 @@ public class AddressRepositoryImpl implements AddressRepository {
 
         return 0;
     }
+
+    @Override
+    public long totalCount() {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        String sql = "select count(*) " +
+                "from address";
+
+        log.debug("sql:{}",sql);
+
+        try( PreparedStatement psmt = connection.prepareStatement(sql);
+        ) {
+            ResultSet rs = psmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public Page<Address> findAllbyId(String userId, int page, int pageSize) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        int offset = (page - 1) * pageSize;
+        String sql = "select * " +
+                "from address " +
+                "where user_id = ?" +
+                "order by address_id desc " +
+                "limit ?,?";
+
+        try(PreparedStatement psmt = connection.prepareStatement(sql)){
+            psmt.setString(1, userId);
+            psmt.setInt(2,offset);
+            psmt.setInt(3,pageSize);
+            ResultSet rs = psmt.executeQuery();
+
+            List<Address> addressList = new ArrayList<>();
+
+            while (rs.next()){
+                Address address = new Address(
+                        rs.getString("user_id"),
+                        rs.getString("address")
+                );
+                addressList.add(address);
+            }
+
+            long total = 0;
+            if(!addressList.isEmpty()){
+                total = totalCount();
+            }
+
+            return new Page<Address>(addressList, total);
+
+        } catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }

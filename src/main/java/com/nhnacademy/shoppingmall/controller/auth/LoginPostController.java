@@ -38,7 +38,7 @@ public class LoginPostController implements BaseController {
         LocalDateTime latestLogin = user.getLatestLoginAt();
 
         // 테스트용 접속일 조작
-        //latestLogin = LocalDateTime.now().minusDays(3);
+//        latestLogin = LocalDateTime.now().minusDays(3);
 
         if(LocalDate.now().isAfter(latestLogin.toLocalDate())){
             //하루가 지났다

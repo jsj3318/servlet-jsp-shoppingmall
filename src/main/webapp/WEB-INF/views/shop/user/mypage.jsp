@@ -65,10 +65,6 @@
 <a href="/userUpdate.do" class="btn btn-primary">회원 정보 수정</a>
 
 
-<%
-    List<PointHistory> pointHistoryList = (List<PointHistory>) request.getAttribute("pointHistoryList");
-%>
-
 <%--   포인트 내역 조회  --%>
 <div class="container mt-4">
     <h2>포인트 이용 내역</h2>
@@ -111,12 +107,17 @@
     </tbody>
 
 </table>
+
+    <!-- 페이징 UI -->
+    <div class="pagination">
+        <c:forEach var="i" begin="1" end="${pointHistoryTotalPages}">
+            <a href="?pointPage=${i}&addressPage=${addressCurrentPage}" class="${i == pointHistoryCurrentPage ? 'active' : ''} page-link">${i}</a>
+        </c:forEach>
+    </div>
+
 </div>
 
 <%--유저의 주소 목록 / 추가/ 수정/ 삭제 버튼--%>
-<%
-    List<Address> addressList = (List<Address>) request.getAttribute("addressList");
-%>
 <div class="container mt-4">
 
     <h2>주소 목록</h2>
@@ -205,6 +206,13 @@
 
     </table>
 
+    <!-- 페이징 UI -->
+    <div class="pagination">
+        <c:forEach var="i" begin="1" end="${addressTotalPages}">
+            <a href="?pointPage=${pointHistoryCurrentPage}&addressPage=${i}" class="${i == addressCurrentPage ? 'active' : ''} page-link">${i}</a>
+        </c:forEach>
+    </div>
+
     <script>
         // 모달에 기존 주소 값을 설정하는 함수
         function setEditModalValues(address) {
@@ -220,9 +228,11 @@
 
 
 <%--탈퇴 버튼--%>
+<div class="d-flex justify-content-center mt-5">
 <form method="post" action="/userDeleteAction.do" onsubmit="return confirmDelete()">
     <button class="btn btn-danger ms-3" type="submit">회원탈퇴</button>
 </form>
+</div>
 
 <script>
     function confirmDelete(){

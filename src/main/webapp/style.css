@@ -24,3 +24,21 @@ ul li {
 form {
     display: inline;
 }
+
+.pagination {
+    display: flex; /* Flexbox를 사용하여 정렬 */
+    gap: 10px; /* 페이지 링크 사이에 간격 추가 */
+}
+
+.page-link {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    padding: 5px 10px; /* 링크에 패딩 추가 */
+    color: #007bff; /* 기본 링크 색상 */
+}
+
+.page-link.active {
+    font-weight: bold; /* 현재 페이지 링크 강조 */
+    color: #fff; /* 현재 페이지 링크 색상 */
+    background-color: #51e860; /* 현재 페이지 링크 배경 색상 */
+    border-radius: 5px; /* 모서리 둥글게 */
+}
