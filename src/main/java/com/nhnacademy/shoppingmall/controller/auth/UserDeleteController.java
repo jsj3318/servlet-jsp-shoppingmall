@@ -12,22 +12,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.transaction.Transactional;
+
 @Slf4j
+@Transactional
 @RequestMapping(method = RequestMapping.Method.POST, value = {"/userDeleteAction.do"})
 public class UserDeleteController implements BaseController {
-        private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         // 회원 탈퇴 버튼 클릭 시 이벤트
         // db에서 유저 삭제 후 메인 으로
-        DbConnectionThreadLocal.initialize();
 
         HttpSession session = req.getSession(false);
         User user = (User) session.getAttribute("user");
 
         userService.deleteUser(user.getUserId());
-        DbConnectionThreadLocal.reset();
 
         log.debug("{} 유저 탈퇴함", user.getUserId());
 

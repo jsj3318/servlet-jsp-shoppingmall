@@ -5,6 +5,7 @@ import com.nhnacademy.shoppingmall.common.mvc.view.ViewResolver;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.mvc.controller.ControllerFactory;
 
+import com.nhnacademy.shoppingmall.controller.ControllerProxy;
 import lombok.extern.slf4j.Slf4j;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -34,11 +35,13 @@ public class FrontServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
-            //todo#7-3 Connection pool로 부터 connection 할당 받습니다. connection은 Thread 내에서 공유됩니다.
-            DbConnectionThreadLocal.initialize();
+
+            //DbConnectionThreadLocal.initialize();
 
             BaseController baseController = (BaseController) controllerFactory.getController(req);
-            String viewName = baseController.execute(req,resp);
+            ControllerProxy controllerProxy = new ControllerProxy(baseController);
+            String viewName = controllerProxy.execute(req, resp);
+            //String viewName = baseController.execute(req,resp);
 
             if(viewResolver.isRedirect(viewName)){
                 String redirectUrl = viewResolver.getRedirectUrl(viewName);
@@ -55,8 +58,7 @@ public class FrontServlet extends HttpServlet {
             }
         }catch (Exception e){
             log.error("error:{}",e);
-            DbConnectionThreadLocal.setSqlError(true);
-            //todo#7-5 예외가 발생하면 해당 예외에 대해서 적절한 처리를 합니다.
+            //DbConnectionThreadLocal.setSqlError(true);
 
             req.setAttribute("status_code", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             req.setAttribute("exception_type", e.getClass().getName());
@@ -67,8 +69,7 @@ public class FrontServlet extends HttpServlet {
             req.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(req, resp);
 
         }finally {
-            //todo#7-4 connection을 반납합니다.
-            DbConnectionThreadLocal.reset();
+            //DbConnectionThreadLocal.reset();
 
         }
     }

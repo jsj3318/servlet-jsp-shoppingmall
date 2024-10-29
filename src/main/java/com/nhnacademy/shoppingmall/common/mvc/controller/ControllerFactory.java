@@ -40,6 +40,10 @@ public class ControllerFactory {
             for(Class<?> cls : c){
                 Object command = cls.getDeclaredConstructor().newInstance();
                 RequestMapping requestMapping = command.getClass().getAnnotation(RequestMapping.class);
+                if(requestMapping == null){
+                    continue;
+                }
+
                 String[] values = requestMapping.value();
                 for(String value : values){
                     String key = requestMapping.method() + "-" + value;

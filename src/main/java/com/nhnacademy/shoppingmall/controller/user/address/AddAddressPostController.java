@@ -1,5 +1,8 @@
 package com.nhnacademy.shoppingmall.controller.user.address;
 
+import com.nhnacademy.shoppingmall.address.repository.impl.AddressRepositoryImpl;
+import com.nhnacademy.shoppingmall.address.service.AddressService;
+import com.nhnacademy.shoppingmall.address.service.impl.AddressServiceImpl;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
@@ -10,21 +13,19 @@ import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
+@Transactional
 @RequestMapping(method = RequestMapping.Method.POST, value = {"/addAddress.do"})
 public class AddAddressPostController implements BaseController {
-//    private final
+    private final AddressService addressService = new AddressServiceImpl(new AddressRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        DbConnectionThreadLocal.initialize();
 
 
 
-
-
-        DbConnectionThreadLocal.reset();
 
         return "shop/user/mypage";
     }

@@ -10,16 +10,17 @@ import com.nhnacademy.shoppingmall.user.service.impl.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
+@Transactional
 @RequestMapping(method = RequestMapping.Method.POST, value = {"/userRegisterAction.do"})
 public class UserRegisterPostController implements BaseController {
-        private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         // 회원가입 화면에서 정보 모두 입력 후 등록
-        DbConnectionThreadLocal.initialize();
 
         User user = new User(
                 req.getParameter("user_id"),
@@ -33,8 +34,6 @@ public class UserRegisterPostController implements BaseController {
         );
 
         userService.saveUser(user);
-
-        DbConnectionThreadLocal.reset();
 
         return "shop/main/index";
     }

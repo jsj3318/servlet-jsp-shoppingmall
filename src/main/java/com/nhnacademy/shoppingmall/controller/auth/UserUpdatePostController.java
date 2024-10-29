@@ -11,8 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
+@Transactional
 @RequestMapping(method = RequestMapping.Method.POST, value = {"/userUpdateAction.do"})
 public class UserUpdatePostController implements BaseController {
         private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
@@ -20,7 +22,6 @@ public class UserUpdatePostController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
         // 회원 정보 수정 에서 정보 입력 후 수정 버튼 누름
-        DbConnectionThreadLocal.initialize();
 
         HttpSession session = req.getSession(false);
         User user = (User) session.getAttribute("user");
@@ -29,8 +30,6 @@ public class UserUpdatePostController implements BaseController {
         user.setUserBirth(req.getParameter("user_birth"));
 
         userService.updateUser(user);
-
-        DbConnectionThreadLocal.reset();
 
         // 현재 세션의 유저정보 재 설정
         session.setAttribute("user", user);

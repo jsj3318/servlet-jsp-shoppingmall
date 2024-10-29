@@ -12,8 +12,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @RequestMapping(method = RequestMapping.Method.GET, value = {"/mypage.do"})
 public class MypageController implements BaseController {
 
@@ -41,12 +43,9 @@ public class MypageController implements BaseController {
 
 
         // 해당 유저의 주소리스트 받아서 전달해야 함
-        DbConnectionThreadLocal.initialize();
 
         List<Address> addressList = addressService.getAddress(user.getUserId());
         req.setAttribute("addressList", addressList);
-
-        DbConnectionThreadLocal.reset();
 
 
         return "shop/user/mypage";
