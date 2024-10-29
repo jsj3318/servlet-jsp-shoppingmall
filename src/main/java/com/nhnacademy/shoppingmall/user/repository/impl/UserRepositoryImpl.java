@@ -214,7 +214,7 @@ public class UserRepositoryImpl implements UserRepository {
         try( PreparedStatement psmt = connection.prepareStatement(sql);
         ) {
             psmt.setString(1, userId);
-            ResultSet rs = psmt.executeQuery();;
+            ResultSet rs = psmt.executeQuery();
 
             if(rs.next()){
                 return rs.getInt(1);
