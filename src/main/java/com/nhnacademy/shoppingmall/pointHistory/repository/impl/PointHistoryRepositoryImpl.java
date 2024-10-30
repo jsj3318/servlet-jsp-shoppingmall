@@ -64,7 +64,7 @@ public class PointHistoryRepositoryImpl implements PointHistoryRepository {
         ) {
             psmt.setString(1, pointHistory.getUser_id());
             psmt.setInt(2, pointHistory.getChange_amount());
-            psmt.setString(3, pointHistory.getReason());
+            psmt.setString(3, pointHistory.getReason().trim());
             psmt.setTimestamp(4, Timestamp.valueOf(pointHistory.getCreated_at()));
 
             return psmt.executeUpdate();

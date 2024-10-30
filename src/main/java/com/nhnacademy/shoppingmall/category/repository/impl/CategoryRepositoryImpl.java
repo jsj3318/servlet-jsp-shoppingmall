@@ -53,7 +53,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         log.debug("sql:{}",sql);
 
         try(PreparedStatement psmt = connection.prepareStatement(sql)){
-            psmt.setString(1, category);
+            psmt.setString(1, category.trim());
             return psmt.executeUpdate();
 
         } catch(SQLException e){
@@ -86,7 +86,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         log.debug("sql:{}",sql);
 
         try(PreparedStatement psmt = connection.prepareStatement(sql)){
-            psmt.setString(1, newName);
+            psmt.setString(1, newName.trim());
             psmt.setInt(2, id);
             return psmt.executeUpdate();
 

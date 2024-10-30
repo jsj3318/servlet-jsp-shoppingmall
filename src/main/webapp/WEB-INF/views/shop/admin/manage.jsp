@@ -22,7 +22,7 @@
 
     <h2>카테고리 목록</h2>
 
-    <%--    카테고리 추가 inpput button --%>
+    <%--    카테고리 추가 input button --%>
     <form action="addCategory.do" method="post" class="mb-3">
         <div class="input-group">
             <input type="text" name="newCategory" class="form-control" placeholder="새 카테고리명 입력" required>
@@ -116,7 +116,7 @@
     <!-- 페이징 UI -->
     <div class="pagination">
         <c:forEach var="i" begin="1" end="${categoryTotalPages}">
-            <a href="?categoryPage=${i}&memberPage=${memberCurrentPage}" class="${i == categoryCurrentPage ? 'active' : ''} page-link">${i}</a>
+            <a href="?categoryPage=${i}&productPage=${productCurrentPage}&memberPage=${memberCurrentPage}" class="${i == categoryCurrentPage ? 'active' : ''} page-link">${i}</a>
         </c:forEach>
     </div>
 
@@ -134,6 +134,81 @@
 
 
 <%-- 상품 관리 --%>
+<%-- 상품 카테고리 관리  --%>
+<div class="container mt-4">
+
+    <h2>상품 목록</h2>
+
+    <%--    상품 추가 페이지 button --%>
+    <a href="/addProduct.do" class="btn btn-primary">상품 등록</a>
+
+    <%--    상품 목록 출력 --%>
+    <table class="table table-striped">
+
+        <thead>
+        <tr>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>재고</th>
+            <th class="text-end">관리</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <c:choose>
+
+            <c:when test="${empty productList}">
+                <tr>
+                    <td colspan="4" class="text-center">등록된 상품이 없습니다. 상품을 등록 해 주세요.</td>
+                </tr>
+            </c:when>
+
+            <c:otherwise>
+
+                <c:forEach var="product" items="${productList}">
+                    <tr>
+
+                        <td>${product.product_name}</td>
+                        <td>${product.price}</td>
+                        <td>${product.quantity}</td>
+
+                        <td class="text-end">
+
+                            <a href="/productPage.do?product_id=${product.product_id}" class="btn btn-sm btn-primary" style="display:inline-block; margin-right: 5px;">상품 페이지</a>
+
+                            <a href="/updateProduct.do?product_id=${product.product_id}" class="btn btn-sm btn-warning" style="display:inline-block; margin-right: 5px;">수정</a>
+
+                            <form action="deleteProduct.do" method="post" style="display:inline-block;" onsubmit="return confirmDeleteProduct()">
+                                <input type="hidden" name="product_id" value="${product.product_id}">
+                                <button type="submit" class="btn btn-sm btn-danger">삭제</button>
+                            </form>
+
+                            <script>
+                                function confirmDeleteProduct(){
+                                    return confirm("${product.product_name} 상품을 진짜루 삭제 하시겠습니까?");
+                                }
+                            </script>
+
+                        </td>
+
+                    </tr>
+                </c:forEach>
+
+            </c:otherwise>
+        </c:choose>
+        </tbody>
+
+    </table>
+
+    <!-- 페이징 UI -->
+    <div class="pagination">
+        <c:forEach var="i" begin="1" end="${productTotalPages}">
+            <a href="?categoryPage=${categoryCurrentPage}&product=${i}&memberPage=${memberCurrentPage}" class="${i == productCurrentPage ? 'active' : ''} page-link">${i}</a>
+        </c:forEach>
+    </div>
+
+
+</div>
 
 
 
@@ -238,7 +313,7 @@
 <!-- 페이징 UI -->
 <div class="pagination">
     <c:forEach var="i" begin="1" end="${memberTotalPages}">
-        <a href="?categoryPage=${categoryCurrentPage}&memberPage=${i}" class="${i == memberCurrentPage ? 'active' : ''} page-link">${i}</a>
+        <a href="?categoryPage=${categoryCurrentPage}&productPage=${productCurrentPage}&memberPage=${i}" class="${i == memberCurrentPage ? 'active' : ''} page-link">${i}</a>
     </c:forEach>
 </div>
 

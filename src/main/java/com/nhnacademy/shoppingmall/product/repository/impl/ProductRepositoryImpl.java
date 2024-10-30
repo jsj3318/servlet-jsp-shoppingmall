@@ -28,11 +28,11 @@ public class ProductRepositoryImpl implements ProductRepository {
         log.debug("sql:{}",sql);
 
         try(PreparedStatement psmt = connection.prepareStatement(sql)){
-            psmt.setString(1, product.getProduct_name());
+            psmt.setString(1, product.getProduct_name().trim());
             psmt.setBigDecimal(2, new BigDecimal(product.getPrice()));
-            psmt.setString(3, product.getThumnail_uri());
-            psmt.setString(4, product.getDescription());
-            psmt.setString(5, product.getImage_uri());
+            psmt.setString(3, product.getThumnail_uri().trim());
+            psmt.setString(4, product.getDescription().trim());
+            psmt.setString(5, product.getImage_uri().trim());
             psmt.setInt(6, product.getQuantity());
             return psmt.executeUpdate();
 
