@@ -19,8 +19,8 @@
 
     <div class="col-md-4">
       <c:choose>
-        <c:when test="${not empty product.thumbnail_uri}">
-          <img src="${product.thumbnail_uri}" alt="${product.product_name} Thumbnail" class="img-fluid mb-3">
+        <c:when test="${not empty thumbnail_uri}">
+          <img src="${thumbnail_uri}" alt="${product.product_name} Thumbnail" class="img-fluid mb-3">
         </c:when>
         <c:otherwise>
           <img src="/resources/no-image.png" alt="No Image Available" class="img-fluid mb-3">
@@ -41,8 +41,8 @@
 
     <div class="col-md-12">
       <c:choose>
-        <c:when test="${not empty product.thumbnail_uri}">
-          <img src="${product.image_uri}" alt="${product.product_name} Image" class="img-fluid">
+        <c:when test="${not empty image_uri}">
+          <img src="${image_uri}" alt="${product.product_name} Image" class="img-fluid">
         </c:when>
         <c:otherwise>
           <img src="/resources/no-image.png" alt="No Image Available" class="img-fluid mb-3">

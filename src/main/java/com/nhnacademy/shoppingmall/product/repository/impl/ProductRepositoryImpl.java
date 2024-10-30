@@ -1,6 +1,5 @@
 package com.nhnacademy.shoppingmall.product.repository.impl;
 
-import com.nhnacademy.shoppingmall.category.domain.Category;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Product;
@@ -24,17 +23,15 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "insert into " +
-                "product (product_name, price, thumbnail_uri, description, image_uri, quantity) " +
+                "product (product_name, price, description, quantity) " +
                 "values (?, ?, ?, ?, ?, ?)";
         log.debug("sql:{}",sql);
 
         try(PreparedStatement psmt = connection.prepareStatement(sql)){
             psmt.setString(1, product.getProduct_name().trim());
             psmt.setBigDecimal(2, new BigDecimal(product.getPrice()));
-            psmt.setString(3, product.getThumbnail_uri().trim());
-            psmt.setString(4, product.getDescription().trim());
-            psmt.setString(5, product.getImage_uri().trim());
-            psmt.setInt(6, product.getQuantity());
+            psmt.setString(3, product.getDescription().trim());
+            psmt.setInt(4, product.getQuantity());
             return psmt.executeUpdate();
 
         } catch(SQLException e){
@@ -50,9 +47,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         String sql = "update product " +
                 "set product_name = ?, " +
                     "price = ?, " +
-                    "thumbnail_uri = ?, " +
                     "description = ?, " +
-                    "image_uri = ?, " +
                     "quantity = ? " +
                 "where product_id = ?";
         log.debug("sql:{}",sql);
@@ -60,11 +55,9 @@ public class ProductRepositoryImpl implements ProductRepository {
         try(PreparedStatement psmt = connection.prepareStatement(sql)){
             psmt.setString(1, product.getProduct_name());
             psmt.setBigDecimal(2, new BigDecimal(product.getPrice()));
-            psmt.setString(3, product.getThumbnail_uri());
-            psmt.setString(4, product.getDescription());
-            psmt.setString(5, product.getImage_uri());
-            psmt.setInt(6, product.getQuantity());
-            psmt.setInt(7, product.getProduct_id());
+            psmt.setString(3, product.getDescription());
+            psmt.setInt(4, product.getQuantity());
+            psmt.setInt(5, product.getProduct_id());
             return psmt.executeUpdate();
 
         } catch(SQLException e){
@@ -166,9 +159,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         rs.getInt("product_id"),
                         rs.getString("product_name"),
                         rs.getBigDecimal("price").toBigInteger(),
-                        rs.getString("thumbnail_uri"),
                         rs.getString("description"),
-                        rs.getString("image_uri"),
                         rs.getInt("quantity")
                 );
                 return Optional.of(product);
@@ -200,9 +191,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         rs.getInt("product_id"),
                         rs.getString("product_name"),
                         rs.getBigDecimal("price").toBigInteger(),
-                        rs.getString("thumbnail_uri"),
                         rs.getString("description"),
-                        rs.getString("image_uri"),
                         rs.getInt("quantity")
                 ));
             }
@@ -237,9 +226,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         rs.getInt("product_id"),
                         rs.getString("product_name"),
                         rs.getBigDecimal("price").toBigInteger(),
-                        rs.getString("thumbnail_uri"),
                         rs.getString("description"),
-                        rs.getString("image_uri"),
                         rs.getInt("quantity")
                 ));
             }
@@ -274,9 +261,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         rs.getInt("product_id"),
                         rs.getString("product_name"),
                         rs.getBigDecimal("price").toBigInteger(),
-                        rs.getString("thumbnail_uri"),
                         rs.getString("description"),
-                        rs.getString("image_uri"),
                         rs.getInt("quantity")
                 ));
             }
@@ -317,9 +302,7 @@ public class ProductRepositoryImpl implements ProductRepository {
                         rs.getInt("product_id"),
                         rs.getString("product_name"),
                         rs.getBigDecimal("price").toBigInteger(),
-                        rs.getString("thumbnail_uri"),
                         rs.getString("description"),
-                        rs.getString("image_uri"),
                         rs.getInt("quantity")
                 ));
             }

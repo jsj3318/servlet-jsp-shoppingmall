@@ -27,9 +27,13 @@ public class ProductPageController implements BaseController {
             throw new RuntimeException("존재하지 않는 상품의 페이지!!!!");
         }
 
+        String thumbnail_uri = "/resources/thumbnail/" + product_id + ".png";
+        String image_uri = "/resources/image/" + product_id + ".png";
 
-        log.debug("{} 상품 조회", product.getProduct_name());
+        req.setAttribute("thumbnail_uri", thumbnail_uri);
+        req.setAttribute("image_uri", image_uri);
         req.setAttribute("product", product);
+        log.debug("{} 상품 조회", product.getProduct_name());
         return "shop/product/productpage";
     }
 
