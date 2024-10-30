@@ -15,6 +15,127 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
+<h1>관리자 페이지</h1>
+
+<%-- 상품 카테고리 관리  --%>
+<div class="container mt-4">
+
+    <h2>카테고리 목록</h2>
+
+    <%--    카테고리 추가 inpput button --%>
+    <form action="addCategory.do" method="post" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="newCategory" class="form-control" placeholder="새 카테고리명 입력" required>
+            <button type="submit" class="btn btn-primary">등록</button>
+        </div>
+    </form>
+
+
+    <%--    카테고리 수정 창 --%>
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCategoryLabel">카테고리 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="updateCategory.do" method="post">
+                    <div class="modal-body">
+                        <!-- 카테고리 id 전달하기 위한 hidden 필드 -->
+                        <input type="hidden" name="category_id" id="category_id">
+                        <!-- 카테고리명 입력 필드 -->
+                        <div class="mb-3">
+                            <label for="newCategory" class="form-label">새 카테고리명</label>
+                            <input type="text" class="form-control" id="newCategory" name="newCategory" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary">수정 완료</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <%--    카테고리 목록 출력 --%>
+    <table class="table table-striped">
+
+        <thead>
+        <tr>
+            <th>카테고리</th>
+            <th style="width: 120px;" class="text-end">관리</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <c:choose>
+
+            <c:when test="${empty categoryList}">
+                <tr>
+                    <td colspan="2" class="text-center">등록된 카테고리가 없습니다. 새 카테고리를 등록 해 주세요.</td>
+                </tr>
+            </c:when>
+
+            <c:otherwise>
+
+                <c:forEach var="category" items="${categoryList}">
+                    <tr>
+                        <td>${category.category_name}</td>
+                        <td class="text-end">
+                            <button
+                                    type="button"
+                                    class="btn btn-sm btn-warning"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#editCategoryModal"
+                                    onclick="setEditCategoryModalValues('${category.category_id}', '${category.category_name}')">
+                                수정
+                            </button>
+                            <form action="deleteCategory.do" method="post" style="display:inline;" onsubmit="return confirmDeleteCategory()">
+                                <input type="hidden" name="category_id" value="${category.category_id}">
+                                <button type="submit" class="btn btn-sm btn-danger">삭제</button>
+                            </form>
+
+                            <script>
+                                function confirmDeleteCategory(){
+                                    return confirm("${category.category_name} 카테고리를 진짜루 삭제 하시겠습니까?");
+                                }
+                            </script>
+
+                        </td>
+                    </tr>
+                </c:forEach>
+
+            </c:otherwise>
+        </c:choose>
+        </tbody>
+
+    </table>
+
+    <!-- 페이징 UI -->
+    <div class="pagination">
+        <c:forEach var="i" begin="1" end="${categoryTotalPages}">
+            <a href="?categoryPage=${i}&memberPage=${memberCurrentPage}" class="${i == categoryCurrentPage ? 'active' : ''} page-link">${i}</a>
+        </c:forEach>
+    </div>
+
+    <script>
+        // 모달에 기존 주소 값을 설정하는 함수
+        function setEditCategoryModalValues(category_id, category_name) {
+            document.getElementById("category_id").value = category_id;
+            document.getElementById("newCategory").value = category_name;
+        }
+    </script>
+
+
+</div>
+
+
+
+<%-- 상품 관리 --%>
+
+
 
 
 <%--    회원 상세 정보 창 --%>
@@ -117,7 +238,7 @@
 <!-- 페이징 UI -->
 <div class="pagination">
     <c:forEach var="i" begin="1" end="${memberTotalPages}">
-        <a href="?memberPage=${i}" class="${i == memberCurrentPage ? 'active' : ''} page-link">${i}</a>
+        <a href="?categoryPage=${categoryCurrentPage}&memberPage=${i}" class="${i == memberCurrentPage ? 'active' : ''} page-link">${i}</a>
     </c:forEach>
 </div>
 

@@ -1,5 +1,8 @@
 package com.nhnacademy.shoppingmall.controller.admin;
 
+import com.nhnacademy.shoppingmall.category.domain.Category;
+import com.nhnacademy.shoppingmall.category.repository.CategoryRepository;
+import com.nhnacademy.shoppingmall.category.repository.impl.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.page.Page;
@@ -22,6 +25,7 @@ import java.util.List;
 public class ManageController implements BaseController {
 
     private final UserRepository userRepository = new UserRepositoryImpl();
+    private final CategoryRepository categoryRepository = new CategoryRepositoryImpl();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -33,12 +37,27 @@ public class ManageController implements BaseController {
         long totalItems = 0;
         int totalPages = 1;
 
+        // 카테고리 리스트
+        page = Integer.parseInt(req.getParameter("categoryPage") != null ?
+                req.getParameter("categoryPage") : "1");
+        pageSize = 3;
+        totalItems = categoryRepository.totalCount();
+        totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+        Page<Category> categoryPage = categoryRepository.findPage(page, pageSize);
+        List<Category> categoryList = categoryPage.getContent();
+
+        req.setAttribute("categoryList", categoryList);
+        req.setAttribute("categoryCurrentPage", page);
+        req.setAttribute("categoryTotalPages", totalPages);
+
+
         // 회원 목록을 위한 리스트 보내기
         // memberList
         // memberPage
         page = Integer.parseInt(req.getParameter("memberPage") != null ?
                 req.getParameter("memberPage") : "1");
-        pageSize = 10;
+        pageSize = 3;
         totalItems = userRepository.totalCount();
         totalPages = (int) Math.ceil((double) totalItems / pageSize);
 

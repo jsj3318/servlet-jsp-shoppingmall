@@ -11,15 +11,15 @@ public class Category {
         this.category_name = category_name;
     }
 
-    public int getId() {
+    public int getCategory_id() {
         return category_id;
     }
 
-    public String getName() {
+    public String getCategory_name() {
         return category_name;
     }
 
-    public void setName(String category_name) {
+    public void setCategory_name(String category_name) {
         this.category_name = category_name;
     }
 

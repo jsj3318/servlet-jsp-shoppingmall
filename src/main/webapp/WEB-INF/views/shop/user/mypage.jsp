@@ -16,7 +16,7 @@
 
 
 <%--회원 정보 표시 / 정보 수정 버튼--%>
-<table>
+<table class="table">
     <tbody>
 
     <tr>

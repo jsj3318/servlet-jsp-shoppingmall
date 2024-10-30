@@ -1,6 +1,5 @@
 package com.nhnacademy.shoppingmall.category.repository.impl;
 
-import com.nhnacademy.shoppingmall.address.domain.Address;
 import com.nhnacademy.shoppingmall.category.domain.Category;
 import com.nhnacademy.shoppingmall.category.repository.CategoryRepository;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
@@ -47,14 +46,14 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     }
 
     @Override
-    public int save(Category category) {
+    public int save(String category) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "insert into category(category_name) " +
                 "values (?)";
         log.debug("sql:{}",sql);
 
         try(PreparedStatement psmt = connection.prepareStatement(sql)){
-            psmt.setString(1, category.getName());
+            psmt.setString(1, category);
             return psmt.executeUpdate();
 
         } catch(SQLException e){
@@ -120,4 +119,39 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         return 0;
     }
 
+    @Override
+    public Page<Category> findPage(int page, int pageSize) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        int offset = (page - 1) * pageSize;
+        String sql = "select * " +
+                "from category " +
+                "limit ?,?";
+
+        log.debug("sql:{}",sql);
+
+        try(PreparedStatement psmt = connection.prepareStatement(sql)){
+            psmt.setInt(1,offset);
+            psmt.setInt(2,pageSize);
+            ResultSet rs = psmt.executeQuery();
+
+            List<Category> categoryList = new ArrayList<>();
+
+            while (rs.next()){
+                Category category = new Category(
+                        rs.getInt("category_id"),
+                        rs.getString("category_name")
+                );
+                categoryList.add(category);
+            }
+
+            long total = totalCount();
+
+            return new Page<Category>(categoryList, total);
+
+
+        } catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 }

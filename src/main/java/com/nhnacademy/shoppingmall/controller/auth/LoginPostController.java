@@ -1,10 +1,12 @@
 package com.nhnacademy.shoppingmall.controller.auth;
 
+import com.nhnacademy.shoppingmall.common.initialize.PointThreadInitializer;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.pointHistory.domain.PointHistory;
 import com.nhnacademy.shoppingmall.pointHistory.repository.PointHistoryRepository;
 import com.nhnacademy.shoppingmall.pointHistory.repository.impl.PointHistoryRepositoryImpl;
+import com.nhnacademy.shoppingmall.thread.channel.RequestChannel;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
 import com.nhnacademy.shoppingmall.user.service.UserService;
@@ -39,6 +41,9 @@ public class LoginPostController implements BaseController {
 
         // 테스트용 접속일 조작
 //        latestLogin = LocalDateTime.now().minusDays(3);
+
+//        RequestChannel requestChannel = (RequestChannel) req.getServletContext().getAttribute(PointThreadInitializer.CONTEXT_REQUEST_CHANNEL_NAME);
+//        requestChannel.addRequest(new );
 
         if(LocalDate.now().isAfter(latestLogin.toLocalDate())){
             //하루가 지났다
