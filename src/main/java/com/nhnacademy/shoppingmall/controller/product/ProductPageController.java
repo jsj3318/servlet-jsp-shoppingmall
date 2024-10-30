@@ -2,6 +2,7 @@ package com.nhnacademy.shoppingmall.controller.product;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
+import com.nhnacademy.shoppingmall.common.util.UriUtil;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import com.nhnacademy.shoppingmall.product.repository.ProductRepository;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl;
@@ -27,8 +28,8 @@ public class ProductPageController implements BaseController {
             throw new RuntimeException("존재하지 않는 상품의 페이지!!!!");
         }
 
-        String thumbnail_uri = "/resources/thumbnail/" + product_id + ".png";
-        String image_uri = "/resources/image/" + product_id + ".png";
+        String thumbnail_uri = UriUtil.toThumbnailUri(product_id);
+        String image_uri = UriUtil.toImageUri(product_id);
 
         req.setAttribute("thumbnail_uri", thumbnail_uri);
         req.setAttribute("image_uri", image_uri);
