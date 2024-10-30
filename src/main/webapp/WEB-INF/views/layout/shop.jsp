@@ -21,6 +21,12 @@
 </head>
 <body>
 
+<%
+    HttpSession session = request.getSession(false);
+    User user = (session != null) ? (User) session.getAttribute("user") : null;
+    request.setAttribute("user", user); // EL에서 사용 가능하도록 설정
+%>
+
     <div class="mainContainer">
         <header class="p-3 bg-dark text-white">
             <div class="container">
@@ -33,38 +39,37 @@
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li><a href="/index.do" class="nav-link px-2 text-secondary">Home</a></li>
                         <li><a href="/mypage.do" class="nav-link px-2 text-white">마이페이지</a></li>
+                        <c:if test="${user != null && user.userAuth == 'ROLE_ADMIN'}">
+                            <li><a href="/manage.do" class="nav-link px-2 text-white" >관리</a></li>
+                        </c:if>
                     </ul>
 
                     <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
                         <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
                     </form>
 
-                    <%
-                        // 로그인 한 세션의 경우 - 이름, 로그아웃 표시
-                        HttpSession session = request.getSession(false);
-                        User user = null;
-                        if(session != null) {
-                            user = (User) session.getAttribute("user");
-                        }
-                        if(user != null){
-                    %>
                     <div class="text-end d-flex align-items-center" style="height: 100%;">
-                        <p class="text-white mb-0"><%=user.getUserName()%> 님 환영합니다!</p>
-                        <form method="post" action="/logoutAction.do">
-                            <button class="btn btn-warning ms-3" type="submit">로그아웃</button>
-                        </form>
+                        <c:choose>
+
+<%--                            로그인 한 경우 이름, 로그아웃 --%>
+                            <c:when test="${not empty user}">
+                                <p class="text-white mb-0">${user.userName} 님 환영합니다!</p>
+                                <form method="post" action="/logoutAction.do">
+                                    <button class="btn btn-warning ms-3" type="submit">로그아웃</button>
+                                </form>
+                            </c:when>
+
+<%--                            로그인 안한 경우 로그인, 회원가입 버튼 --%>
+                            <c:otherwise>
+                                <div class="text-end">
+                                    <a class="btn btn-outline-light me-2" href="/login.do" >로그인</a>
+                                    <a class="btn btn-warning" href="userRegister.do" >회원가입</a>
+                                </div>
+                            </c:otherwise>
+
+                        </c:choose>
                     </div>
-                    <%
-                            // 로그인 안 한 경우 로그인, 회원가입 버튼 표시
-                        }else{
-                            %>
-                    <div class="text-end">
-                        <a class="btn btn-outline-light me-2" href="/login.do" >로그인</a>
-                        <a class="btn btn-warning" href="userRegister.do" >회원가입</a>
-                    </div>
-                    <%
-                        }
-                    %>
+
 
                 </div>
             </div>
