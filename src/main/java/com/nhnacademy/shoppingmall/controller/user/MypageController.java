@@ -46,15 +46,21 @@ public class MypageController implements BaseController {
         // 유저 정보 전달해서 shop/user/mypage.jsp 연결
         req.setAttribute("user", user);
 
+
+        //페이징을 위한 변수들
+        int page = 1;
+        int pageSize = 10;
+        long totalItems = 0;
+        int totalPages = 1;
+
         // 유저의 포인트 이용 내역 전달하기
         // 일시 desc 되어서 옴
         //페이징 적용
-        int page = Integer.parseInt(req.getParameter("pointPage") != null ?
+        page = Integer.parseInt(req.getParameter("pointPage") != null ?
                 req.getParameter("pointPage") : "1");
-        int pageSize = 10;
-
-        long totalItems = pointHistoryRepository.countById(user.getUserId());
-        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+        pageSize = 10;
+        totalItems = pointHistoryRepository.countById(user.getUserId());
+        totalPages = (int) Math.ceil((double) totalItems / pageSize);
 
         Page<PointHistory> pointHistoryPage = pointHistoryRepository.findAllbyId(user.getUserId(), page, pageSize);
         List<PointHistory> pointHistoryList = pointHistoryPage.getContent();

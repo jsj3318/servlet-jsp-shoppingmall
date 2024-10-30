@@ -42,3 +42,8 @@ form {
     background-color: #51e860; /* 현재 페이지 링크 배경 색상 */
     border-radius: 5px; /* 모서리 둥글게 */
 }
+
+.modal-label {
+    font-size: 1.25rem;
+    font-weight: bold;
+}

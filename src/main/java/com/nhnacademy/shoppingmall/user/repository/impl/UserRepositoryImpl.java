@@ -1,12 +1,15 @@
 package com.nhnacademy.shoppingmall.user.repository.impl;
 
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
+import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import com.nhnacademy.shoppingmall.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -225,6 +228,76 @@ public class UserRepositoryImpl implements UserRepository {
         }
 
         return 0;
+    }
+
+
+    @Override
+    public long totalCount() {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        String sql = "select count(*) " +
+                "from users";
+
+        log.debug("sql:{}",sql);
+
+        try( PreparedStatement psmt = connection.prepareStatement(sql);
+        ) {
+            ResultSet rs = psmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public Page<User> findAll(int page, int pageSize) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        // ROLE_ADMIN이 먼저 나오도록
+        int offset = (page - 1) * pageSize;
+        String sql = "select * " +
+                "from users " +
+                "order by user_auth asc, created_at desc " +
+                "limit ?,?";
+
+        log.debug("sql:{}",sql);
+
+        try(PreparedStatement psmt = connection.prepareStatement(sql)){
+            psmt.setInt(1,offset);
+            psmt.setInt(2,pageSize);
+            ResultSet rs = psmt.executeQuery();
+
+            List<User> userList = new ArrayList<>();
+            while(rs.next()){
+                User user = new User(
+                        rs.getString("user_id"),
+                        rs.getString("user_name"),
+                        rs.getString("user_password"),
+                        rs.getString("user_birth"),
+                        User.Auth.valueOf(rs.getString("user_auth")),
+                        rs.getInt("user_point"),
+                        Objects.nonNull(rs.getTimestamp("created_at")) ? rs.getTimestamp("created_at").toLocalDateTime() : null,
+                        Objects.nonNull(rs.getTimestamp("latest_login_at")) ? rs.getTimestamp("latest_login_at").toLocalDateTime() : null
+                );
+
+                userList.add(user);
+            }
+
+            long total = totalCount();
+
+            return new Page<User>(userList, total);
+
+
+        } catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+
     }
 
 }
