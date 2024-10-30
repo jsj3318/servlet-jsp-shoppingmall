@@ -7,16 +7,16 @@ public class Product {
     private final int product_id;
     private String product_name;
     private BigInteger price;
-    private String thumnail_uri;
+    private String thumbnail_uri;
     private String description;
     private String image_uri;
     private int quantity;
 
-    public Product(int product_id, String product_name, BigInteger price, String thumnail_uri, String description, String image_uri, int quantity) {
+    public Product(int product_id, String product_name, BigInteger price, String thumbnail_uri, String description, String image_uri, int quantity) {
         this.product_id = product_id;
         this.product_name = product_name;
         this.price = price;
-        this.thumnail_uri = thumnail_uri;
+        this.thumbnail_uri = thumbnail_uri;
         this.description = description;
         this.image_uri = image_uri;
         this.quantity = quantity;
@@ -42,12 +42,12 @@ public class Product {
         this.price = price;
     }
 
-    public String getThumnail_uri() {
-        return thumnail_uri;
+    public String getThumbnail_uri() {
+        return thumbnail_uri;
     }
 
-    public void setThumnail_uri(String thumnail_uri) {
-        this.thumnail_uri = thumnail_uri;
+    public void setThumbnail_uri(String thumnail_uri) {
+        this.thumbnail_uri = thumnail_uri;
     }
 
     public String getDescription() {

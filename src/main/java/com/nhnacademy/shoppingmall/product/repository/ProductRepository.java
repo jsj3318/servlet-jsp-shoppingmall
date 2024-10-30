@@ -4,6 +4,7 @@ import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductRepository {
 
@@ -13,6 +14,8 @@ public interface ProductRepository {
 
     long countAll();
     long countbyCategoryId(int categoryId);
+
+    Optional<Product> findbyId(int productId);
 
     List<Product> findAll();
     List<Product> findbyCategoryId(int categoryId);

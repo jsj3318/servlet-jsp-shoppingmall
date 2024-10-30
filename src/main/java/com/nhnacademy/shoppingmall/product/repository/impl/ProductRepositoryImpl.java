@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class ProductRepositoryImpl implements ProductRepository {
@@ -30,7 +31,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         try(PreparedStatement psmt = connection.prepareStatement(sql)){
             psmt.setString(1, product.getProduct_name().trim());
             psmt.setBigDecimal(2, new BigDecimal(product.getPrice()));
-            psmt.setString(3, product.getThumnail_uri().trim());
+            psmt.setString(3, product.getThumbnail_uri().trim());
             psmt.setString(4, product.getDescription().trim());
             psmt.setString(5, product.getImage_uri().trim());
             psmt.setInt(6, product.getQuantity());
@@ -59,7 +60,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         try(PreparedStatement psmt = connection.prepareStatement(sql)){
             psmt.setString(1, product.getProduct_name());
             psmt.setBigDecimal(2, new BigDecimal(product.getPrice()));
-            psmt.setString(3, product.getThumnail_uri());
+            psmt.setString(3, product.getThumbnail_uri());
             psmt.setString(4, product.getDescription());
             psmt.setString(5, product.getImage_uri());
             psmt.setInt(6, product.getQuantity());
@@ -142,6 +143,42 @@ public class ProductRepositoryImpl implements ProductRepository {
 
         return 0;
 
+    }
+
+    @Override
+    public Optional<Product> findbyId(int productId) {
+
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        String sql = "select * " +
+                "from product " +
+                "where product_id = ?";
+
+        log.debug("sql:{}",sql);
+
+        try( PreparedStatement psmt = connection.prepareStatement(sql);
+        ) {
+            psmt.setInt(1, productId);
+            ResultSet rs = psmt.executeQuery();
+
+            if(rs.next()){
+                Product product = new Product(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getBigDecimal("price").toBigInteger(),
+                        rs.getString("thumbnail_uri"),
+                        rs.getString("description"),
+                        rs.getString("image_uri"),
+                        rs.getInt("quantity")
+                );
+                return Optional.of(product);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Optional.empty();
     }
 
     @Override
