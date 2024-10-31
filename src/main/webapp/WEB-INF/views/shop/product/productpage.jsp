@@ -17,7 +17,16 @@
 
   <div class="row">
 
-    <div class="col-md-4">
+<%--  속한 카테고리 목록 가로로 --%>
+  <div class="category-container mt-3">
+    <c:forEach var="category" items="${categoryList}">
+      <span class="category-badge">${category.category_name}</span>
+    </c:forEach>
+  </div>
+
+
+
+  <div class="col-md-4">
       <c:choose>
         <c:when test="${not empty thumbnail_uri}">
           <img src="${thumbnail_uri}" alt="${product.product_name} Thumbnail" class="img-fluid mb-3">

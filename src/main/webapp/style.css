@@ -21,3 +21,19 @@
     font-size: 1.25rem;
     font-weight: bold;
 }
+
+.category-container {
+    display: flex;
+    align-items: center; /* 세로 정렬 */
+    flex-wrap: wrap; /* 여러 줄로 쌓이게 */
+}
+
+.category-badge {
+    background-color: #e0e0e0; /* 배경색 */
+    color: #333; /* 글자색 */
+    padding: 10px 15px; /* 내부 여백을 증가시켜 뱃지 크기 증가 */
+    margin: 10px; /* 외부 여백을 증가시켜 간격 확대 */
+    border-radius: 20px; /* 모서리 둥글게 */
+    font-size: 16px; /* 폰트 크기를 증가시켜 뱃지 크기 증가 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
