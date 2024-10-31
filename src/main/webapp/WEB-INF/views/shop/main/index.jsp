@@ -27,7 +27,7 @@
             <h5>카테고리</h5>
             <ul class="list-group category-list">
                 <c:forEach var="category" items="${categoryList}">
-                    <li class="list-group-item">
+                    <li class="list-group-item ${category.category_id == currentCategory ? 'active-category' : ''}">
                         <a href="?currentCategory=${category.category_id}" class="category-link">${category.category_name}</a>
                     </li>
                 </c:forEach>
@@ -57,25 +57,25 @@
                 <ul class="pagination justify-content-center">
                     <c:if test="${productCurrentPage > 1}">
                         <li class="page-item">
-                            <a class="page-link" href="?CurrentCategory=${param.CurrentCategory}&productPage=1">첫 페이지</a>
+                            <a class="page-link" href="?CurrentCategory=${param.CurrentCategory}&productPage=1&query=${param.query}">첫 페이지</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?CurrentCategory=${param.CurrentCategory}&productPage=${productCurrentPage - 1}">이전</a>
+                            <a class="page-link" href="?CurrentCategory=${param.CurrentCategory}&productPage=${productCurrentPage - 1}&query=${param.query}">이전</a>
                         </li>
                     </c:if>
 
                     <c:forEach begin="1" end="${productTotalPages}" var="i">
                         <li class="page-item <c:if test='${i == productCurrentPage}'>active</c:if>">
-                            <a class="page-link" href="?CurrentCategory=${param.CurrentCategory}&productPage=${i}">${i}</a>
+                            <a class="page-link" href="?CurrentCategory=${param.CurrentCategory}&productPage=${i}&query=${param.query}">${i}</a>
                         </li>
                     </c:forEach>
 
                     <c:if test="${productCurrentPage < productTotalPages}">
                         <li class="page-item">
-                            <a class="page-link" href="?CurrentCategory=${param.CurrentCategory}&productPage=${productCurrentPage + 1}">다음</a>
+                            <a class="page-link" href="?CurrentCategory=${param.CurrentCategory}&productPage=${productCurrentPage + 1}&query=${param.query}">다음</a>
                         </li>
                         <li class="page-item">
-                            <a class="page-link" href="?CurrentCategory=${param.CurrentCategory}&productPage=${productTotalPages}">마지막 페이지</a>
+                            <a class="page-link" href="?CurrentCategory=${param.CurrentCategory}&productPage=${productTotalPages}&query=${param.query}">마지막 페이지</a>
                         </li>
                     </c:if>
                 </ul>

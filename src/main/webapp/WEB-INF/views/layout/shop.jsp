@@ -44,8 +44,8 @@
                         </c:if>
                     </ul>
 
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="index.do" method="get">
+                        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search" name="query" value="${param.query}">
                     </form>
 
                     <div class="text-end d-flex align-items-center" style="height: 100%;">

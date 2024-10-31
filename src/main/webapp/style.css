@@ -71,3 +71,9 @@
 .category-list .category-link:hover {
     color: #007bff; /* 마우스 오버 시 글자 색상 변화 */
 }
+
+.active-category {
+    background-color: #b4d4fd !important; /* 강조 색상 */
+    color: #fff !important; /* 텍스트 색상 */
+    font-weight: bold; /* 강조를 위해 굵게 */
+}

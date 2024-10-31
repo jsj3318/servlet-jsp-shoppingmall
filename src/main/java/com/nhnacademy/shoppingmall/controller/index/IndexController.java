@@ -35,13 +35,12 @@ public class IndexController implements BaseController {
         int totalPages = 1;
 
 
-        int totalCategory = categoryRepository.totalCount();
+        // 카테고리
         int currentCategory = Integer.parseInt(
                 req.getParameter("currentCategory") == null?
                         "0" : req.getParameter("currentCategory")
         );
 
-        req.setAttribute("totalCategory", totalCategory);
         req.setAttribute("currentCategory", currentCategory);
         // 카테고리 불러오고 카테고리로 목록 만들기
         List<Category> categoryList = categoryRepository.findAll();
@@ -53,14 +52,31 @@ public class IndexController implements BaseController {
         page = Integer.parseInt(req.getParameter("productPage") != null ?
                 req.getParameter("productPage") : "1");
         pageSize = 9;
-        totalItems = currentCategory == 0 ?
-                productRepository.countAll() :
-                productRepository.countbyCategoryId(currentCategory);
-        totalPages = (int) Math.ceil((double) totalItems / pageSize);
 
-        Page<Product> productPage = currentCategory == 0 ?
-                productRepository.pageAll(page, pageSize) :
-                productRepository.pagebyCategoryId(currentCategory, page, pageSize);
+        // 검색어 파라미터
+        String query = req.getParameter("query") != null ?
+                req.getParameter("query") : "";
+
+
+        Page<Product> productPage;
+        //검색 했을 경우
+        if(query != null && !query.isBlank()){
+            totalItems = productRepository.countbyQuery(query);
+            totalPages = (int) Math.ceil((double) totalItems / pageSize);
+            productPage = productRepository.pagebyquery(query, page, pageSize);
+        }
+        else{
+            // 검색이 아닐 때
+            totalItems = currentCategory == 0 ?
+                    productRepository.countAll() :
+                    productRepository.countbyCategoryId(currentCategory);
+            totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+            productPage = currentCategory == 0 ?
+                    productRepository.pageAll(page, pageSize) :
+                    productRepository.pagebyCategoryId(currentCategory, page, pageSize);
+        }
+
         List<Product> productList = productPage.getContent();
 
         req.setAttribute("productList", productList);

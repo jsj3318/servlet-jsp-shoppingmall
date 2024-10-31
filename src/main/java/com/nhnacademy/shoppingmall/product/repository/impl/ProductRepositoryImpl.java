@@ -325,4 +325,67 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     }
 
+    @Override
+    public long countbyQuery(String query) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        String sql = "select count(*) " +
+                "from product " +
+                "where product_name LIKE CONCAT('%', ?, '%')";
+
+        log.debug("sql:{}",sql);
+
+        try( PreparedStatement psmt = connection.prepareStatement(sql);
+        ) {
+            psmt.setString(1, query);
+            ResultSet rs = psmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public Page<Product> pagebyquery(String query, int page, int pageSize) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        int offset = (page - 1) * pageSize;
+        String sql = "select * " +
+                "from product " +
+                "where product_name LIKE CONCAT('%', ?, '%') " +
+                "limit ?,?";
+
+        log.debug("sql:{}",sql);
+
+        try(PreparedStatement psmt = connection.prepareStatement(sql)){
+            psmt.setString(1, query);
+            psmt.setInt(2, offset);
+            psmt.setInt(3, pageSize);
+            ResultSet rs = psmt.executeQuery();
+            List<Product> productList = new ArrayList<>();
+            while(rs.next()){
+                productList.add(new Product(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getBigDecimal("price").toBigInteger(),
+                        rs.getString("description"),
+                        rs.getInt("quantity")
+                ));
+            }
+
+            long total = countbyQuery(query);
+
+            return new Page<Product>(productList, total);
+
+
+        } catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 }
