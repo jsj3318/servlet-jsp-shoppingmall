@@ -28,6 +28,7 @@ public class IndexController implements BaseController {
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
 
+
         //페이징을 위한 변수들
         int page = 1;
         int pageSize = 9;

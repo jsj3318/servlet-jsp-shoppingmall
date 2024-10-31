@@ -2,7 +2,6 @@ package com.nhnacademy.shoppingmall.controller.auth;
 
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
-import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
 import com.nhnacademy.shoppingmall.user.service.UserService;
@@ -12,12 +11,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 
 @Transactional
 @RequestMapping(method = RequestMapping.Method.POST, value = {"/userUpdateAction.do"})
 public class UserUpdatePostController implements BaseController {
-        private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
+    private final UserService userService = new UserServiceImpl(new UserRepositoryImpl());
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {

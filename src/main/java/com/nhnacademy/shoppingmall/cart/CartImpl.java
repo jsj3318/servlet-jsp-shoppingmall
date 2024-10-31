@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.cart;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,9 @@ public class CartImpl implements Cart{
     //장바구니
     private List<CartItem> itemList = new ArrayList<>();
 
+    public List<CartItem> getItemList() {
+        return itemList;
+    }
 
     @Override
     public void add(CartItem item) {
@@ -46,4 +50,14 @@ public class CartImpl implements Cart{
             }
         }
     }
+
+    @Override
+    public BigInteger getTotal() {
+        BigInteger res = BigInteger.ZERO; // 초기값 설정
+        for (CartItem item : itemList) {
+            res = res.add(item.getPrice().multiply(BigInteger.valueOf(item.getQuantity()))); // 수량 반영
+        }
+        return res;
+    }
+
 }

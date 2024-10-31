@@ -1,8 +1,5 @@
 package com.nhnacademy.shoppingmall.controller.category;
 
-import com.nhnacademy.shoppingmall.address.domain.Address;
-import com.nhnacademy.shoppingmall.address.repository.AddressRepository;
-import com.nhnacademy.shoppingmall.address.repository.impl.AddressRepositoryImpl;
 import com.nhnacademy.shoppingmall.category.repository.CategoryRepository;
 import com.nhnacademy.shoppingmall.category.repository.impl.CategoryRepositoryImpl;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;

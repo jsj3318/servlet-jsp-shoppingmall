@@ -5,17 +5,12 @@ import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.util.UriUtil;
 import com.nhnacademy.shoppingmall.product.repository.ProductRepository;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.transaction.Transactional;
 import java.io.File;
-import java.io.IOException;
-import java.math.BigInteger;
 
 
 @Slf4j

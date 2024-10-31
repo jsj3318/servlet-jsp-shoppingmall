@@ -3,7 +3,6 @@ package com.nhnacademy.shoppingmall.controller.product;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.util.UriUtil;
-import com.nhnacademy.shoppingmall.product.domain.Product;
 import com.nhnacademy.shoppingmall.product.repository.ProductRepository;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl;
 import com.nhnacademy.shoppingmall.product_category.ProductCategoryRepository;

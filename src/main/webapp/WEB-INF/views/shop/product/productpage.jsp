@@ -38,7 +38,15 @@
     </div>
 
     <div class="col-md-8">
-      <h2><strong>${product.product_name}</strong></h2>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <h2><strong>${product.product_name}</strong></h2>
+        <form action="addCartItem.do" method="post">
+          <input type="hidden" name="product_id" value="${product.product_id}">
+          <button type="submit" class="btn btn-success">장바구니에 추가</button>
+        </form>
+      </div>
+
       <p><strong>가격:</strong> ${product.price} 원</p>
       <p><strong>설명:</strong> ${product.description}</p>
       <p><strong>재고 수량:</strong> ${product.quantity}</p>

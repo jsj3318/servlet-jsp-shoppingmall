@@ -1,12 +1,11 @@
 package com.nhnacademy.shoppingmall.controller.auth;
 
-import com.nhnacademy.shoppingmall.common.initialize.PointThreadInitializer;
+import com.nhnacademy.shoppingmall.cart.CartImpl;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.pointHistory.domain.PointHistory;
 import com.nhnacademy.shoppingmall.pointHistory.repository.PointHistoryRepository;
 import com.nhnacademy.shoppingmall.pointHistory.repository.impl.PointHistoryRepositoryImpl;
-import com.nhnacademy.shoppingmall.thread.channel.RequestChannel;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
 import com.nhnacademy.shoppingmall.user.service.UserService;
@@ -39,9 +38,6 @@ public class LoginPostController implements BaseController {
         // latest login 하루 지났을 경우 1만 포인트 적립
         LocalDateTime latestLogin = user.getLatestLoginAt();
 
-        // 테스트용 접속일 조작
-//        latestLogin = LocalDateTime.now().minusDays(3);
-
 //        RequestChannel requestChannel = (RequestChannel) req.getServletContext().getAttribute(PointThreadInitializer.CONTEXT_REQUEST_CHANNEL_NAME);
 //        requestChannel.addRequest(new );
 
@@ -61,9 +57,14 @@ public class LoginPostController implements BaseController {
 
         }
 
+        // 세션 생성
         HttpSession session = req.getSession();
         session.setMaxInactiveInterval(3600);
         session.setAttribute("user", user);
+
+
+        //세션에 장바구니 생성
+        session.setAttribute("cart", new CartImpl());
 
         log.debug("{} 로그인 됨", user.getUserId());
 
