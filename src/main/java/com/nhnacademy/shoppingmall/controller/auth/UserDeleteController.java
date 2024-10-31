@@ -35,7 +35,7 @@ public class UserDeleteController implements BaseController {
         // 세션 제거
         session.invalidate();
 
-        return "shop/main/index";
+        return "redirect:/main.do";
 
     }
 }

@@ -67,7 +67,7 @@ public class LoginPostController implements BaseController {
 
         log.debug("{} 로그인 됨", user.getUserId());
 
-        return "shop/main/index";
+        return "redirect:/main.do";
     }
 
 }

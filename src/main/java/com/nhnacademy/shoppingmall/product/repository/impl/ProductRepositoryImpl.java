@@ -253,6 +253,7 @@ public class ProductRepositoryImpl implements ProductRepository {
         int offset = (page - 1) * pageSize;
         String sql = "select * " +
                 "from product " +
+                "order by product_id desc " +
                 "limit ?,?";
 
         log.debug("sql:{}",sql);

@@ -34,6 +34,6 @@ public class UserUpdatePostController implements BaseController {
         // 현재 세션의 유저정보 재 설정
         session.setAttribute("user", user);
 
-        return "shop/main/index";
+        return "redirect:/main.do";
     }
 }

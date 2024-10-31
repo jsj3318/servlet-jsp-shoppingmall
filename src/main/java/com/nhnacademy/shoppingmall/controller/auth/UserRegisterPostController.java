@@ -35,6 +35,6 @@ public class UserRegisterPostController implements BaseController {
 
         userService.saveUser(user);
 
-        return "shop/main/index";
+        return "redirect:/main.do";
     }
 }

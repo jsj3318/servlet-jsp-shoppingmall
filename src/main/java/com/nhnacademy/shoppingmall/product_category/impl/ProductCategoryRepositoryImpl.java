@@ -2,10 +2,12 @@ package com.nhnacademy.shoppingmall.product_category.impl;
 
 import com.nhnacademy.shoppingmall.category.domain.Category;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
+import com.nhnacademy.shoppingmall.common.page.Page;
+import com.nhnacademy.shoppingmall.product.domain.Product;
 import com.nhnacademy.shoppingmall.product_category.ProductCategoryRepository;
+import com.nhnacademy.shoppingmall.purchase_product.domain.PurchaseProduct;
 import lombok.extern.slf4j.Slf4j;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +101,7 @@ public class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
             throw new RuntimeException(e);
         }
     }
+
 
 
 }

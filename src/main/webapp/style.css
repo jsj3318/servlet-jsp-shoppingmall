@@ -37,3 +37,37 @@
     font-size: 16px; /* 폰트 크기를 증가시켜 뱃지 크기 증가 */
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
+
+.category-list-container {
+    position: sticky;
+    top: 40px; /* 스크롤 시 고정할 위치 (예: 상단에서 20px 떨어진 위치) */
+    z-index: 1000; /* 다른 요소들보다 위에 있도록 */
+    align-self: start;
+}
+
+.category-list {
+    border: 1px solid #ccc; /* 테두리 */
+    padding: 15px; /* 안쪽 여백 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    background-color: #f9f9f9; /* 배경 색상 */
+    margin-top: 20px; /* 위쪽 여백 */
+    max-height: 1000px; /* 최대 높이 */
+    overflow-y: auto; /* 스크롤 가능 */
+}
+
+.category-list .list-group-item {
+    transition: background-color 0.3s; /* 부드러운 전환 효과 */
+}
+
+.category-list .list-group-item:hover {
+    background-color: #e0e0e0; /* 마우스 오버 시 배경 색상 변화 */
+}
+
+.category-list .category-link {
+    color: #333; /* 진한 검정색 글자 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.category-list .category-link:hover {
+    color: #007bff; /* 마우스 오버 시 글자 색상 변화 */
+}
