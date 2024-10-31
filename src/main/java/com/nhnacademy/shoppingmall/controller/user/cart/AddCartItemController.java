@@ -39,14 +39,17 @@ public class AddCartItemController implements BaseController {
         }
 
         int product_id = Integer.parseInt(req.getParameter("product_id"));
-        Product product = productRepository.findbyId(product_id).get();
-
-        CartItem item = new CartItem(
-                product_id, product.getProduct_name(), product.getPrice(), 1, UriUtil.toThumbnailUri(product_id));
         Cart cart = (Cart) session.getAttribute("cart");
-        cart.add(item);
 
-        session.setAttribute("cart", cart);
+        if(!cart.hasProduct(product_id)){
+            Product product = productRepository.findbyId(product_id).get();
+
+            CartItem item = new CartItem(
+                    product_id, product.getProduct_name(), product.getPrice(), 1, UriUtil.toThumbnailUri(product_id));
+            cart.add(item);
+
+            session.setAttribute("cart", cart);
+        }
 
         return "redirect:/cart.do";
     }

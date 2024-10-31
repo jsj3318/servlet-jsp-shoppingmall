@@ -41,10 +41,22 @@
 
       <div class="d-flex justify-content-between align-items-center">
         <h2><strong>${product.product_name}</strong></h2>
-        <form action="addCartItem.do" method="post">
-          <input type="hidden" name="product_id" value="${product.product_id}">
-          <button type="submit" class="btn btn-success">장바구니에 추가</button>
-        </form>
+
+        <c:choose>
+          <c:when test="${inCart == null || !inCart}">
+            <form action="addCartItem.do" method="post">
+              <input type="hidden" name="product_id" value="${product.product_id}">
+              <button type="submit" class="btn" style="background-color: #007bff; color: white;">장바구니에 추가</button>
+            </form>
+          </c:when>
+          <c:otherwise>
+            <form action="cart.do" method="get">
+              <button type="submit" class="btn btn-success" style="color: white;">장바구니 추가됨</button>
+            </form>
+          </c:otherwise>
+        </c:choose>
+
+
       </div>
 
       <p><strong>가격:</strong> ${product.price} 원</p>

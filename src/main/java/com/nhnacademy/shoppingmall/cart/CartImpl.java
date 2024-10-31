@@ -60,4 +60,14 @@ public class CartImpl implements Cart{
         return res;
     }
 
+    @Override
+    public boolean hasProduct(int product_id) {
+        for(CartItem item : itemList){
+            if(item.getProduct_id() == product_id){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

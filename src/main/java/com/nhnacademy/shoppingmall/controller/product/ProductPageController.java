@@ -1,5 +1,6 @@
 package com.nhnacademy.shoppingmall.controller.product;
 
+import com.nhnacademy.shoppingmall.cart.Cart;
 import com.nhnacademy.shoppingmall.category.domain.Category;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
@@ -11,6 +12,7 @@ import com.nhnacademy.shoppingmall.product_category.ProductCategoryRepository;
 import com.nhnacademy.shoppingmall.product_category.impl.ProductCategoryRepositoryImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.transaction.Transactional;
@@ -32,6 +34,18 @@ public class ProductPageController implements BaseController {
         if(product == null){
             throw new RuntimeException("존재하지 않는 상품의 페이지!!!!");
         }
+
+        // 장바구니 여부 전달
+        HttpSession session = req.getSession(false);
+        Cart cart = null;
+        if(session != null){
+            cart = (Cart)session.getAttribute("cart");
+        }
+
+        if(cart != null){
+            req.setAttribute("inCart", cart.hasProduct(product_id));
+        }
+
 
         // 이미지 uri 가져오기
         String thumbnail_uri = UriUtil.toThumbnailUri(product_id);

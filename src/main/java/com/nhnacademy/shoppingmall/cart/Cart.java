@@ -9,4 +9,5 @@ public interface Cart {
     public void increase(int product_id);
     public void decrease(int product_id);
     public BigInteger getTotal();
+    public boolean hasProduct(int product_id);
 }
