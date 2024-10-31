@@ -22,13 +22,19 @@
         <ul class="list-group">
             <c:forEach var="item" items="${cart.itemList}">
                 <li class="list-group-item cart-item d-flex align-items-center">
-                    <img src="${item.thumbnailUri}" alt="${item.product_name} Thumbnail" class="thumbnail me-3">
+
+                    <a href="productPage.do?product_id=${item.product_id}">
+                        <img src="${item.thumbnailUri}" alt="${item.product_name} Thumbnail" class="thumbnail me-3">
+                    </a>
+
                     <div class="item-details">
-                        <h3><strong>${item.product_name}</strong></h3>
+                        <h3><a href="productPage.do?product_id=${item.product_id}" style="color: inherit; text-decoration: none;">
+                            <strong>${item.product_name}</strong>
+                        </a></h3>
                         <strong>가격:</strong> ${item.price * item.quantity} 원 <br>
                         <strong>수량:</strong> ${item.quantity}
 
-                        <form action="/cartItemIncrease.do" method="post" style="display:inline;">
+                    <form action="/cartItemIncrease.do" method="post" style="display:inline;">
                             <input type="hidden" name="product_id" value="${item.product_id}">
                             <button type="submit" class="btn btn-sm quantity-button">+</button>
                         </form>
