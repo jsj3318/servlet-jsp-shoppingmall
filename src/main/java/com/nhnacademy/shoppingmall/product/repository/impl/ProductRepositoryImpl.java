@@ -7,10 +7,8 @@ import com.nhnacademy.shoppingmall.product.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.math.BigInteger;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,25 +17,33 @@ import java.util.Optional;
 public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
-    public int save(Product product) {
+    public int saveAndGetId(String name, BigInteger price, String description, int quantity) {
 
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "insert into " +
                 "product (product_name, price, description, quantity) " +
-                "values (?, ?, ?, ?, ?, ?)";
+                "values (?, ?, ?, ?)";
         log.debug("sql:{}",sql);
 
-        try(PreparedStatement psmt = connection.prepareStatement(sql)){
-            psmt.setString(1, product.getProduct_name().trim());
-            psmt.setBigDecimal(2, new BigDecimal(product.getPrice()));
-            psmt.setString(3, product.getDescription().trim());
-            psmt.setInt(4, product.getQuantity());
-            return psmt.executeUpdate();
+        try(PreparedStatement psmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            psmt.setString(1, name.trim());
+            psmt.setBigDecimal(2, new BigDecimal(price));
+            psmt.setString(3, description.trim());
+            psmt.setInt(4, quantity);
+            psmt.executeUpdate();
+
+            // 생성된 키(ID)를 반환
+            try (ResultSet rs = psmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);  // 첫 번째 열에서 생성된 ID를 반환
+                }
+            }
 
         } catch(SQLException e){
             throw new RuntimeException(e);
         }
 
+        return -1;
     }
 
     @Override

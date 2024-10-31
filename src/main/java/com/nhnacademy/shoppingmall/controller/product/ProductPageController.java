@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.util.Optional;
 
 @Slf4j
@@ -30,6 +31,18 @@ public class ProductPageController implements BaseController {
 
         String thumbnail_uri = UriUtil.toThumbnailUri(product_id);
         String image_uri = UriUtil.toImageUri(product_id);
+
+
+        File file = new File(req.getServletContext().getRealPath(thumbnail_uri));
+        log.debug("file uri: {}", file.getPath());
+        if(!file.exists()){
+            thumbnail_uri = UriUtil.NO_IMAGE;
+        }
+
+        file = new File(req.getServletContext().getRealPath(image_uri));
+        if(!file.exists()){
+            image_uri = UriUtil.NO_IMAGE;
+        }
 
         req.setAttribute("thumbnail_uri", thumbnail_uri);
         req.setAttribute("image_uri", image_uri);

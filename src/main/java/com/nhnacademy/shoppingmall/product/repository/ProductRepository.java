@@ -3,12 +3,15 @@ package com.nhnacademy.shoppingmall.product.repository;
 import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository {
 
-    int save(Product product);
+    int saveAndGetId(String name, BigInteger price, String description, int quantity);
+
     int update(Product product);
     int deletebyId(int id);
 

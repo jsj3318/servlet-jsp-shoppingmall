@@ -15,6 +15,7 @@ import com.nhnacademy.shoppingmall.user.repository.UserRepository;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.transaction.Transactional;
@@ -31,7 +32,22 @@ public class ManageController implements BaseController {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        log.debug("manage controller 실행");
+        HttpSession session = req.getSession(false);
+
+        //유저 정보 확인하고 받기
+        User user = null;
+        if(session != null){
+            user = (User) session.getAttribute("user");
+        }
+
+        if(user == null){
+            return "redirect:/login.do";
+        }
+
+        if(user.getUserAuth() != User.Auth.ROLE_ADMIN){
+            log.debug("{} 회원이 관리자 페이지 접근 시도함", user.getUserId());
+            return "redirect:/main.do";
+        }
 
         //페이징을 위한 변수들
         int page = 1;
