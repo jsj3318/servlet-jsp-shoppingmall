@@ -50,13 +50,44 @@
       <input type="file" class="form-control-file" id="image" name="image">
     </div>
 
+    <!-- 카테고리 선택 부분 -->
+    <div class="form-group mt-4">
+      <label>카테고리 선택 (최대 3개)</label>
+      <div style="border: 1px solid #ccc; padding: 10px; margin-top: 10px; max-height: 150px; overflow-y: auto;">
 
+      <c:forEach var="category" items="${categoryList}">
+        <input type="checkbox" name="categories" value="${category.category_id}"
+         onchange="limitCheckboxes(this)"> ${category.category_name}<br>
+      </c:forEach>
 
-    <button type="submit" class="btn btn-primary mt-3">등록</button>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3" onclick="return validateForm()">등록</button>
   </form>
 
-
-
-
-
 </div>
+
+<script>
+
+  function limitCheckboxes(checkbox) {
+    const checkboxes = document.querySelectorAll('input[name="categories"]');
+    const checkedCount = Array.from(checkboxes).filter(i => i.checked).length;
+
+    if (checkedCount > 3) {
+      alert("최대 3개까지만 선택할 수 있습니다.");
+      checkbox.checked = false; // 마지막으로 체크한 박스를 해제
+    }
+  }
+
+  function validateForm() {
+    const checkboxes = document.querySelectorAll('input[name="categories"]');
+    const checkedCount = Array.from(checkboxes).filter(i => i.checked).length;
+
+    if (checkedCount < 1) {
+      alert("적어도 하나의 카테고리를 선택해 주세요.");
+      return false; // 폼 제출 막기
+    }
+    return true; // 폼 제출 허용
+  }
+
+</script>
