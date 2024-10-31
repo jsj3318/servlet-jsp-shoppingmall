@@ -28,7 +28,7 @@ public class UserUpdateController implements BaseController {
 
         // 회원 정보 수정 눌러서 register (수정 버전) 으로 이동
         // user 어트리뷰트 설정해야함
-        req.setAttribute("user", req.getSession(false).getAttribute("user"));
+        req.setAttribute("user", session.getAttribute("user"));
 
         return "shop/login/register_form";
     }

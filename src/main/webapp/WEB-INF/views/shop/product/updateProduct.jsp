@@ -68,6 +68,8 @@
       </div>
     </div>
 
+    <input type="hidden" name="product_id" value="${product.product_id}">
+
     <button type="submit" class="btn btn-primary mt-3">수정</button>
   </form>
 </div>

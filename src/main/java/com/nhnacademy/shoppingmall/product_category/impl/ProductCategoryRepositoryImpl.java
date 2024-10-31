@@ -53,4 +53,21 @@ public class ProductCategoryRepositoryImpl implements ProductCategoryRepository 
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public int deleteByProductId(int productId) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "delete from product_category " +
+                "where product_id = ?";
+        log.debug("sql:{}",sql);
+
+        try(PreparedStatement psmt = connection.prepareStatement(sql)){
+            psmt.setInt(1, productId);
+            return psmt.executeUpdate();
+
+        } catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 }

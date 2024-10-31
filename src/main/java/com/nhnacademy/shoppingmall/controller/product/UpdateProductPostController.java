@@ -19,14 +19,15 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+
 @MultipartConfig(
         maxFileSize = 1024 * 1024 * 10,         //10MB
         maxRequestSize = 1024 * 1024 * 30       //30MB
 )
 @Slf4j
 @Transactional
-@RequestMapping(method = RequestMapping.Method.POST, value = {"/addProduct.do"})
-public class AddProductPostController implements BaseController {
+@RequestMapping(method = RequestMapping.Method.POST, value = {"/updateProduct.do"})
+public class UpdateProductPostController implements BaseController {
     private final ProductRepository productRepository = new ProductRepositoryImpl();
     private final ProductCategoryRepository productCategoryRepository = new ProductCategoryRepositoryImpl();
 
@@ -38,7 +39,7 @@ public class AddProductPostController implements BaseController {
             String description = null;
             int quantity = 0;
 
-            int productId = -1;
+            int productId = Integer.parseInt(req.getParameter("product_id"));
 
             // 파일 저장 경로 지정
             String thumbnailPath = req.getServletContext().getRealPath(UriUtil.THUMBNAIL_PREFIX);
@@ -60,11 +61,9 @@ public class AddProductPostController implements BaseController {
                     if (part.getSize() > 0) {
 
                         if (part.getName().equals("thumbnail")) {
-                            // 파일 이름을 나중에 사용할 수 있도록 저장 (예: 섬네일)
-                            part.write(thumbnailPath + "temp.png");
+                            part.write(thumbnailPath + productId + ".png");
                         } else if (part.getName().equals("image")) {
-                            // 파일 이름을 나중에 사용할 수 있도록 저장 (예: 상세 이미지)
-                            part.write(imagePath + "temp.png");
+                            part.write(imagePath + productId + ".png");
                         }
 
                     }
@@ -89,14 +88,15 @@ public class AddProductPostController implements BaseController {
 
             }
 
-            productId = productRepository.saveAndGetId(productName, price, description, quantity);
-
-            // 임시로 저장된 파일을 실제 경로에 저장
-            new File(thumbnailPath + "temp.png").renameTo(new File(thumbnailPath + productId + ".png"));
-            new File(imagePath + "temp.png").renameTo(new File(imagePath + productId + ".png"));
-
-
-            log.debug("{} 상품 업로드 됨", productName);
+            Product product = new Product(
+                    productId,
+                    productName,
+                    price,
+                    description,
+                    quantity
+            );
+            productRepository.update(product);
+            log.debug("{} 상품 수정 됨", productName);
 
         } catch (NumberFormatException e) {
             log.error("가격 또는 수량 형식 오류: {}", e.getMessage());
@@ -132,11 +132,10 @@ public class AddProductPostController implements BaseController {
         }
 
 
-        if(productId < 0){
-            throw new RuntimeException("상품 정보 가져오기 실패");
-        }
-
         // 선택된 카테고리들 등록하기
+        // 원래 카테고리 삭제
+        productCategoryRepository.deleteByProductId(productId);
+
         // 선택된 카테고리 처리
         String[] selectedCategories = req.getParameterValues("categories"); // 선택된 카테고리 ID 배열
 
