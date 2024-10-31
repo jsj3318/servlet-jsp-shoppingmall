@@ -11,62 +11,67 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
-<title>상품 등록 페이지</title>
+
+<title>상품 수정 페이지</title>
 
 <div class="container mt-5">
-  <h1>상품 등록</h1>
+  <h1>상품 수정</h1>
 
-  <form action="/addProduct.do" method="post" enctype="multipart/form-data">
-
+  <form action="/updateProduct.do" method="post" enctype="multipart/form-data">
     <div class="form-group">
       <label for="product_name">상품 이름</label>
-      <input type="text" class="form-control" id="product_name" name="product_name" required>
+      <input type="text" class="form-control" id="product_name" name="product_name"
+             value="${product.product_name}" required>
     </div>
 
     <div class="form-group">
       <label for="price">상품 가격</label>
-      <input type="number" class="form-control" id="price" name="price" required>
+      <input type="number" class="form-control" id="price" name="price"
+             value="${product.price}" required>
     </div>
 
     <div class="form-group">
       <label for="description">상품 설명</label>
-      <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+      <textarea class="form-control" id="description" name="description" rows="4" required>${product.description}</textarea>
     </div>
 
     <div class="form-group">
       <label for="quantity">상품 재고 수량</label>
-      <input type="number" class="form-control" id="quantity" name="quantity" required>
+      <input type="number" class="form-control" id="quantity" name="quantity"
+             value="${product.quantity}" required>
     </div>
 
-
-<%--    섬네일, 상세 이미지 파일 업로드 부분 --%>
+    <!-- 섬네일과 상세 이미지 파일 업로드 -->
     <div class="form-group">
       <label for="thumbnail">섬네일 이미지</label>
       <input type="file" class="form-control-file" id="thumbnail" name="thumbnail">
+      <img src="${thumbnail_uri}" alt="섬네일 이미지" style="max-width: 100px;">
     </div>
 
     <div class="form-group">
       <label for="image">상세 이미지</label>
       <input type="file" class="form-control-file" id="image" name="image">
+      <img src="${image_uri}" alt="상세 이미지" style="max-width: 100px;">
     </div>
 
-    <!-- 카테고리 선택 부분 -->
+    <%-- 카테고리 선택 부분 --%>
     <div class="form-group mt-4">
       <label>카테고리 선택 (최대 3개)</label>
       <div style="border: 1px solid #ccc; padding: 10px; margin-top: 10px; max-height: 150px; overflow-y: auto;">
 
-      <c:forEach var="category" items="${categoryList}">
-        <input type="checkbox" name="categories" value="${category.category_id}"
-         onchange="limitCheckboxes(this)"> ${category.category_name}<br>
-      </c:forEach>
+        <c:forEach var="category" items="${categoryList}">
+          <input type="checkbox" name="categories" value="${category.category_id}"
+                 <c:if test="${selectedCategory.contains(category.category_id)}">checked</c:if>
+                 onchange="limitCheckboxes(this)"> ${category.category_name}<br>
+        </c:forEach>
 
-    </div>
+      </div>
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3" onclick="return validateForm()">등록</button>
+    <button type="submit" class="btn btn-primary mt-3">수정</button>
   </form>
-
 </div>
+
 
 <script>
 
