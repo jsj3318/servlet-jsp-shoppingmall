@@ -22,9 +22,13 @@ public interface ProductRepository {
     List<Product> findAll();
     List<Product> findbyCategoryId(int categoryId);
 
+    List<Product> findByPurchaseId(int purchaseId);
+
     Page<Product> pageAll(int page, int pageSize);
     Page<Product> pagebyCategoryId(int categoryId, int page, int pageSize);
 
     long countbyQuery(String query);
     Page<Product> pagebyquery(String query, int page, int pageSize);
+
+    int getQuantityById(int productId);
 }

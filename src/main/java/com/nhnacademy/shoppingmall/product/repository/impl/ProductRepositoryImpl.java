@@ -246,6 +246,39 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
+    public List<Product> findByPurchaseId(int purchaseId) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        String sql = "select * " +
+                "from product p" +
+                    "inner join purchase_product pp on pp.product_id = p.product_id " +
+                "where pp.purchase_id = ?";
+
+        log.debug("sql:{}",sql);
+
+        try( PreparedStatement psmt = connection.prepareStatement(sql);
+        ) {
+            psmt.setInt(1, purchaseId);
+            ResultSet rs = psmt.executeQuery();
+            List<Product> productList = new ArrayList<>();
+            while(rs.next()){
+                productList.add(new Product(
+                        rs.getInt("product_id"),
+                        rs.getString("product_name"),
+                        rs.getBigDecimal("price").toBigInteger(),
+                        rs.getString("description"),
+                        rs.getInt("quantity")
+                ));
+            }
+
+            return productList;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Page<Product> pageAll(int page, int pageSize) {
 
         Connection connection = DbConnectionThreadLocal.getConnection();
@@ -387,5 +420,34 @@ public class ProductRepositoryImpl implements ProductRepository {
         } catch(SQLException e){
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public int getQuantityById(int productId) {
+
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        String sql = "select quantity " +
+                "from product " +
+                "where product_id = ?";
+
+        log.debug("sql:{}",sql);
+
+        try( PreparedStatement psmt = connection.prepareStatement(sql);
+        ) {
+            psmt.setInt(1, productId);
+            ResultSet rs = psmt.executeQuery();
+
+            if(rs.next()){
+
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return 0;
+
     }
 }

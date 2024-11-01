@@ -9,5 +9,5 @@ public interface PurchaseProductRepository {
     public int save(int purchase_id, int product_id, int quantity);
 
     public long countByPurchaseId(int purchase_id);
-    public Page<PurchaseProduct> pageByPurchaseId(int purchase_id, int page, int pageSize);
+
 }

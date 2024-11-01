@@ -104,7 +104,8 @@ public class PurchaseRepositoryImpl implements PurchaseRepository {
         int offset = (page - 1) * pageSize;
         String sql = "select * " +
                 "from purchase " +
-                "where user_id = ? " +
+                "where user_id = ?" +
+                "order by purchased_at desc " +
                 "limit ?,?";
 
         log.debug("sql:{}",sql);
