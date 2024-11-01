@@ -1,27 +1,31 @@
-package com.nhnacademy.shoppingmall.controller.user.address;
+package com.nhnacademy.shoppingmall.controller.purchase;
 
 import com.nhnacademy.shoppingmall.address.domain.Address;
 import com.nhnacademy.shoppingmall.address.repository.AddressRepository;
 import com.nhnacademy.shoppingmall.address.repository.impl.AddressRepositoryImpl;
+import com.nhnacademy.shoppingmall.cart.Cart;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
+import com.nhnacademy.shoppingmall.user.domain.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
-@Transactional
-@RequestMapping(method = RequestMapping.Method.POST, value = {"/addAddress.do"})
-public class AddAddressPostController implements BaseController {
-    private final AddressRepository addressRepository = new AddressRepositoryImpl();
+@Slf4j
+@RequestMapping(method = RequestMapping.Method.GET, value = {"/purchaseResult.do"})
+public class PurchaseResultController implements BaseController {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        String userId = req.getParameter("user_id");
-        String newAddress = req.getParameter("newAddress");
 
-        addressRepository.save( new Address(0, userId, newAddress) );
 
-        return "redirect:/mypage.do";
+
+        return "shop/purchase/purchaseResult";
     }
+
+
 }

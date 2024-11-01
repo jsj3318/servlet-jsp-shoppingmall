@@ -24,7 +24,7 @@ public class AddressRepositoryImplTest {
     @BeforeEach
     void setUp() throws SQLException {
         DbConnectionThreadLocal.initialize();
-        testAddress = new Address("admin","광주 동구 서석동");
+        testAddress = new Address(1000, "admin","광주 동구 서석동");
         addressRepository.save(testAddress);
     }
 
@@ -40,7 +40,7 @@ public class AddressRepositoryImplTest {
     void findByUserId() {
         List<Address> addressList = addressRepository.findByUserId("admin");
         List<Address> actual = new ArrayList<>(Arrays.asList(
-                new Address("admin", "광주 동구 서석동")
+                new Address(1000, "admin", "광주 동구 서석동")
         ));
         Assertions.assertEquals(addressList.getFirst(), actual.getFirst()
         );
@@ -50,7 +50,7 @@ public class AddressRepositoryImplTest {
     @Order(2)
     @DisplayName("address 등록")
     void save() {
-        Address newAddress = new Address("admin", "광주 충장로");
+        Address newAddress = new Address(1000, "admin", "광주 충장로");
         int result = addressRepository.save(newAddress);
         Assertions.assertAll(
                 ()->Assertions.assertEquals(1,result),

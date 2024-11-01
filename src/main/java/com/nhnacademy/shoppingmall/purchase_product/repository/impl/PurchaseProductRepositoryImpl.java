@@ -59,42 +59,4 @@ public class PurchaseProductRepositoryImpl implements PurchaseProductRepository 
         return 0;
     }
 
-    @Override
-    public Page<PurchaseProduct> pageByPurchaseId(int purchase_id, int page, int pageSize) {
-        Connection connection = DbConnectionThreadLocal.getConnection();
-
-        int offset = (page - 1) * pageSize;
-        String sql = "select * " +
-                "from purchase_product " +
-                "where purchase_id = ?" +
-                "limit ?,?";
-
-        log.debug("sql:{}",sql);
-
-        try(PreparedStatement psmt = connection.prepareStatement(sql)){
-            psmt.setInt(1,purchase_id);
-            psmt.setInt(2,offset);
-            psmt.setInt(3,pageSize);
-            ResultSet rs = psmt.executeQuery();
-
-            List<PurchaseProduct> purchaseProductList = new ArrayList<>();
-
-            while (rs.next()){
-                PurchaseProduct purchaseProduct = new PurchaseProduct(
-                        rs.getInt("purchase_id"),
-                        rs.getInt("product_id"),
-                        rs.getInt("quantity")
-                );
-                purchaseProductList.add(purchaseProduct);
-            }
-
-            long total = countByPurchaseId(purchase_id);
-
-            return new Page<PurchaseProduct>(purchaseProductList, total);
-
-
-        } catch(SQLException e){
-            throw new RuntimeException(e);
-        }
-    }
 }

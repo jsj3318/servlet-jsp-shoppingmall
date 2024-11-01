@@ -18,8 +18,7 @@ public class AddressRepositoryImpl implements AddressRepository {
         Connection connection = DbConnectionThreadLocal.getConnection();
 
         // 최근에 등록한 주소를 먼저 보여주도록 키값을 기준으로 내림차순 정렬
-        String sql = "select " +
-                "user_id, address " +
+        String sql = "select * " +
                 "from address " +
                 "where user_id = ? " +
                 "order by address_id desc";
@@ -34,6 +33,7 @@ public class AddressRepositoryImpl implements AddressRepository {
 
             while (rs.next()){
                 Address address = new Address(
+                        rs.getInt("address_id"),
                         rs.getString("user_id"),
                         rs.getString("address")
                 );
@@ -188,6 +188,7 @@ public class AddressRepositoryImpl implements AddressRepository {
 
             while (rs.next()){
                 Address address = new Address(
+                        rs.getInt("address_id"),
                         rs.getString("user_id"),
                         rs.getString("address")
                 );

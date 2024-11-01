@@ -20,7 +20,7 @@ public class DeleteAddressPostController implements BaseController {
         String userId = req.getParameter("user_id");
         String address = req.getParameter("address");
 
-        addressRepository.delete( new Address(userId, address));
+        addressRepository.delete( new Address(0, userId, address));
 
         return "redirect:/mypage.do";
     }

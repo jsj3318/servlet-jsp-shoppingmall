@@ -17,7 +17,7 @@ public class UpdateAddressPostController implements BaseController {
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
-        Address original = new Address(req.getParameter("user_id"), req.getParameter("originalAddress"));
+        Address original = new Address(0, req.getParameter("user_id"), req.getParameter("originalAddress"));
         String newAddress = req.getParameter("newAddress");
 
         addressRepository.update( original, newAddress );
