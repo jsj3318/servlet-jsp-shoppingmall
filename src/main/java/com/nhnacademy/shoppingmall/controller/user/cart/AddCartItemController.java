@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.transaction.Transactional;
+import java.io.File;
 
 @Slf4j
 @Transactional
@@ -44,8 +45,15 @@ public class AddCartItemController implements BaseController {
         if(!cart.hasProduct(product_id)){
             Product product = productRepository.findbyId(product_id).get();
 
+            String uri = UriUtil.toThumbnailUri(product_id);
+            File file = new File(req.getServletContext().getRealPath(uri));
+            if(!file.exists()){
+                uri = UriUtil.NO_IMAGE;
+            }
+
             CartItem item = new CartItem(
-                    product_id, product.getProduct_name(), product.getPrice(), 1, UriUtil.toThumbnailUri(product_id));
+                    product_id, product.getProduct_name(), product.getPrice(), 1,
+                    uri);
             cart.add(item);
 
             session.setAttribute("cart", cart);
