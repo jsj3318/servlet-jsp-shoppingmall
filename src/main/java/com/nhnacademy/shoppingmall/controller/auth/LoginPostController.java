@@ -38,9 +38,6 @@ public class LoginPostController implements BaseController {
         // latest login 하루 지났을 경우 1만 포인트 적립
         LocalDateTime latestLogin = user.getLatestLoginAt();
 
-//        RequestChannel requestChannel = (RequestChannel) req.getServletContext().getAttribute(PointThreadInitializer.CONTEXT_REQUEST_CHANNEL_NAME);
-//        requestChannel.addRequest(new );
-
         if(LocalDate.now().isAfter(latestLogin.toLocalDate())){
             //하루가 지났다
             user.setUserPoint(user.getUserPoint() + 10000);

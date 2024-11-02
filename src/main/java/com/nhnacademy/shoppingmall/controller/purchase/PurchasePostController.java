@@ -5,6 +5,7 @@ import com.nhnacademy.shoppingmall.address.repository.AddressRepository;
 import com.nhnacademy.shoppingmall.address.repository.impl.AddressRepositoryImpl;
 import com.nhnacademy.shoppingmall.cart.Cart;
 import com.nhnacademy.shoppingmall.cart.CartItem;
+import com.nhnacademy.shoppingmall.common.initialize.PointThreadInitializer;
 import com.nhnacademy.shoppingmall.common.mvc.annotation.RequestMapping;
 import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
@@ -18,6 +19,8 @@ import com.nhnacademy.shoppingmall.purchase.repository.PurchaseRepository;
 import com.nhnacademy.shoppingmall.purchase.repository.impl.PurchaseRepositoryImpl;
 import com.nhnacademy.shoppingmall.purchase_product.repository.PurchaseProductRepository;
 import com.nhnacademy.shoppingmall.purchase_product.repository.impl.PurchaseProductRepositoryImpl;
+import com.nhnacademy.shoppingmall.thread.channel.RequestChannel;
+import com.nhnacademy.shoppingmall.thread.request.impl.PointChannelRequest;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import com.nhnacademy.shoppingmall.user.repository.UserRepository;
 import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
@@ -108,8 +111,6 @@ public class PurchasePostController implements BaseController {
 
         // purchase 추가
         // 넘어온 address_id 활용
-
-
         int purchaseId = purchaseRepository.saveAndGetId(
                 user.getUserId(),
                 addressRepository.getAddressById(Integer.parseInt(req.getParameter("address_id"))),
@@ -117,21 +118,24 @@ public class PurchasePostController implements BaseController {
         );
 
         // 유저 포인트 10% 페이백
+        // 독립 thread 에서 처리
         int payback = (int)(totalPrice*0.1);
         user.setUserPoint( user.getUserPoint() + payback );
-
-        // 포인트 증가 내역 생성
-        pointHistoryRepository.save(
-                new PointHistory(
-                        user.getUserId(),
-                        payback,
-                        "포인트 적립",
-                        LocalDateTime.now()
-                )
-        );
-
-        // 유저 포인트 변화 db 적용
-        userRepository.update(user);
+        try {
+            RequestChannel requestChannel = (RequestChannel) req.getServletContext().getAttribute(PointThreadInitializer.CONTEXT_REQUEST_CHANNEL_NAME);
+            requestChannel.addRequest(new PointChannelRequest(payback, user));
+        } catch (InterruptedException e) {
+            log.debug("포인트 적립 스레드 에러");
+            // 포인트 증가 에러 내역 생성
+            pointHistoryRepository.save(
+                    new PointHistory(
+                            user.getUserId(),
+                            0,
+                            "포인트 적립 실패",
+                            LocalDateTime.now()
+                    )
+            );
+        }
 
         // purchase_product들 장바구니에서 가져와서 추가
         // -> purchase id 필요함
