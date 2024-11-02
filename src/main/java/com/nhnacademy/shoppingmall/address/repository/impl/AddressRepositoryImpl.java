@@ -130,7 +130,7 @@ public class AddressRepositoryImpl implements AddressRepository {
         try( PreparedStatement psmt = connection.prepareStatement(sql);
         ) {
             psmt.setString(1, userId);
-            ResultSet rs = psmt.executeQuery();;
+            ResultSet rs = psmt.executeQuery();
 
             if(rs.next()){
                 return rs.getInt(1);
@@ -205,6 +205,32 @@ public class AddressRepositoryImpl implements AddressRepository {
         } catch(SQLException e){
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public String getAddressById(int addressId) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        String sql = "select address " +
+                "from address " +
+                "where address_id = ?";
+
+        log.debug("sql:{}",sql);
+
+        try( PreparedStatement psmt = connection.prepareStatement(sql);
+        ) {
+            psmt.setInt(1, addressId);
+            ResultSet rs = psmt.executeQuery();
+
+            if(rs.next()){
+                return rs.getString(1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return "";
     }
 
 

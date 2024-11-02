@@ -57,7 +57,7 @@ public class FrontServlet extends HttpServlet {
                 rd.include(req, resp);
             }
         }catch (Exception e){
-            log.error("error:{}",e);
+            log.error("error:{}", e.getMessage());
             //DbConnectionThreadLocal.setSqlError(true);
 
             req.setAttribute("status_code", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

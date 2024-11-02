@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface PurchaseRepository {
     public int save(String user_id, String destination, BigInteger total_amount);
+    public int saveAndGetId(String user_id, String destination, BigInteger total_amount);
 
     List<Purchase> findByUserId(String user_id);
 

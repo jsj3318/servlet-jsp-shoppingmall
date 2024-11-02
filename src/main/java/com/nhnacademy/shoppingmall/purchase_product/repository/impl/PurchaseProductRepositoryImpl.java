@@ -1,9 +1,6 @@
 package com.nhnacademy.shoppingmall.purchase_product.repository.impl;
 
-import com.nhnacademy.shoppingmall.category.domain.Category;
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
-import com.nhnacademy.shoppingmall.common.page.Page;
-import com.nhnacademy.shoppingmall.purchase_product.domain.PurchaseProduct;
 import com.nhnacademy.shoppingmall.purchase_product.repository.PurchaseProductRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,8 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 public class PurchaseProductRepositoryImpl implements PurchaseProductRepository {
@@ -21,6 +16,7 @@ public class PurchaseProductRepositoryImpl implements PurchaseProductRepository 
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "insert into purchase_product " +
                 "values (?, ?, ?)";
+        log.debug("sql:{}", sql);
 
         try(PreparedStatement psmt = connection.prepareStatement(sql)){
             psmt.setInt(1, purchase_id);

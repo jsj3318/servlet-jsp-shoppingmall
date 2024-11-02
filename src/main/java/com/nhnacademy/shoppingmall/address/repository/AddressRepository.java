@@ -14,4 +14,6 @@ public interface AddressRepository {
 
     long totalCount();
     Page<Address> findAllbyId(String userId,int page, int pageSize);
+
+    String getAddressById(int addressId);
 }

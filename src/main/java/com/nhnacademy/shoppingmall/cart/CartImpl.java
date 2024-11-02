@@ -8,8 +8,14 @@ public class CartImpl implements Cart{
     //장바구니
     private List<CartItem> itemList = new ArrayList<>();
 
+
     public List<CartItem> getItemList() {
         return itemList;
+    }
+
+    @Override
+    public void clear() {
+        itemList.clear();
     }
 
     @Override

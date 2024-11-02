@@ -38,9 +38,9 @@
     <!-- 주소 선택 -->
     <div class="mt-3">
         <strong>배송지 선택:</strong>
-        <div style="max-height: 150px; overflow-y: auto;">
-
             <form action="purchase.do" method="post">
+                <div style="max-height: 150px; overflow-y: auto;">
+
 
                 <c:forEach var="address" items="${addressList}">
                     <div class="form-check">
@@ -53,10 +53,10 @@
                 </c:forEach>
 
 
-            </form>
 
-        </div>
-    </div>
+                </div>
                 <!-- 주문 결정 버튼 -->
                 <button type="submit" class="btn btn-danger mt-3">주문 결정</button>
+            </form>
+    </div>
 </div>

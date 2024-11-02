@@ -38,6 +38,35 @@ public class PurchaseRepositoryImpl implements PurchaseRepository {
     }
 
     @Override
+    public int saveAndGetId(String user_id, String destination, BigInteger total_amount) {
+
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "insert into purchase " +
+                "(user_id, purchased_at, destination, total_amount) " +
+                "values (?, ?, ?, ?)";
+        log.debug("sql:{}",sql);
+
+        try(PreparedStatement psmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+            psmt.setString(1, user_id);
+            psmt.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+            psmt.setString(3, destination);
+            psmt.setBigDecimal(4, new BigDecimal(total_amount));
+            psmt.executeUpdate();
+
+            try (ResultSet rs = psmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);  // 첫 번째 열에서 생성된 ID를 반환
+                }
+            }
+
+        } catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+
+        return -1;
+    }
+
+    @Override
     public List<Purchase> findByUserId(String user_id) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "select * " +
