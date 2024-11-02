@@ -19,6 +19,8 @@ import com.nhnacademy.shoppingmall.purchase.repository.impl.PurchaseRepositoryIm
 import com.nhnacademy.shoppingmall.purchase_product.repository.PurchaseProductRepository;
 import com.nhnacademy.shoppingmall.purchase_product.repository.impl.PurchaseProductRepositoryImpl;
 import com.nhnacademy.shoppingmall.user.domain.User;
+import com.nhnacademy.shoppingmall.user.repository.UserRepository;
+import com.nhnacademy.shoppingmall.user.repository.impl.UserRepositoryImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +39,7 @@ public class PurchasePostController implements BaseController {
     private final PurchaseRepository purchaseRepository = new PurchaseRepositoryImpl();
     private final PurchaseProductRepository purchaseProductRepository = new PurchaseProductRepositoryImpl();
     private final AddressRepository addressRepository = new AddressRepositoryImpl();
+    private final UserRepository userRepository = new UserRepositoryImpl();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -127,6 +130,8 @@ public class PurchasePostController implements BaseController {
                 )
         );
 
+        // 유저 포인트 변화 db 적용
+        userRepository.update(user);
 
         // purchase_product들 장바구니에서 가져와서 추가
         // -> purchase id 필요함
