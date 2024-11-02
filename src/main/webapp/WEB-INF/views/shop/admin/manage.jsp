@@ -134,7 +134,6 @@
 
 
 <%-- 상품 관리 --%>
-<%-- 상품 카테고리 관리  --%>
 <div class="container mt-4">
 
     <h2>상품 목록</h2>
@@ -203,7 +202,7 @@
     <!-- 페이징 UI -->
     <div class="pagination">
         <c:forEach var="i" begin="1" end="${productTotalPages}">
-            <a href="?categoryPage=${categoryCurrentPage}&product=${i}&memberPage=${memberCurrentPage}" class="${i == productCurrentPage ? 'active' : ''} page-link">${i}</a>
+            <a href="?categoryPage=${categoryCurrentPage}&productPage=${i}&memberPage=${memberCurrentPage}" class="${i == productCurrentPage ? 'active' : ''} page-link">${i}</a>
         </c:forEach>
     </div>
 
@@ -267,7 +266,6 @@
 
 <div class="container mt-4">
     <h2>회원 목록</h2>
-<%--    회원 목록  --%>
 <table class="table table-striped">
 
     <thead>
@@ -318,7 +316,7 @@
 </div>
 
 <script>
-    // 상세정보 모달에 기존 주소 값을 설정하는 함수
+    // 상세정보 모달에 기존 값을 설정하는 함수
     function setMemberInfoModal(userId, userName, userBirth, userAuth, userPoint, createdAt, latestLoginAt) {
         document.getElementById("userId").textContent = userId;
         document.getElementById("userName").textContent = userName;

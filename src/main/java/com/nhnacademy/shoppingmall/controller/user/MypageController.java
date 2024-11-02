@@ -9,6 +9,9 @@ import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.pointHistory.domain.PointHistory;
 import com.nhnacademy.shoppingmall.pointHistory.repository.PointHistoryRepository;
 import com.nhnacademy.shoppingmall.pointHistory.repository.impl.PointHistoryRepositoryImpl;
+import com.nhnacademy.shoppingmall.purchase.domain.Purchase;
+import com.nhnacademy.shoppingmall.purchase.repository.PurchaseRepository;
+import com.nhnacademy.shoppingmall.purchase.repository.impl.PurchaseRepositoryImpl;
 import com.nhnacademy.shoppingmall.user.domain.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,6 +28,7 @@ public class MypageController implements BaseController {
 
     private final AddressRepository addressRepository = new AddressRepositoryImpl();
     private final PointHistoryRepository pointHistoryRepository = new PointHistoryRepositoryImpl();
+    private final PurchaseRepository purchaseRepository = new PurchaseRepositoryImpl();
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) {
@@ -52,6 +56,24 @@ public class MypageController implements BaseController {
         int pageSize = 10;
         long totalItems = 0;
         int totalPages = 1;
+
+
+        // 주문 내역 전달하기
+        // 일시 desc 되어서 옴
+        // 페이징 적용
+        page = Integer.parseInt(req.getParameter("purchasePage") != null ?
+                req.getParameter("purchasePage") : "1");
+        pageSize = 5;
+        totalItems = purchaseRepository.countByUserId(user.getUserId() );
+        totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+        Page<Purchase> purchasePage = purchaseRepository.pagebyUserId(user.getUserId(), page, pageSize);
+        List<Purchase> purchaseList = purchasePage.getContent();
+
+        req.setAttribute("purchaseList", purchaseList);
+        req.setAttribute("purchaseCurrentPage", page);
+        req.setAttribute("purchaseTotalPages", totalPages);
+
 
         // 유저의 포인트 이용 내역 전달하기
         // 일시 desc 되어서 옴

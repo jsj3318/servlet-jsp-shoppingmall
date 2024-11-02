@@ -62,7 +62,60 @@
 
     </tbody>
 </table>
+
 <a href="/userUpdate.do" class="btn btn-primary">회원 정보 수정</a>
+
+
+<%-- 주문 명세 조회 --%>
+<div class="container mt-4">
+    <h2>주문 내역</h2>
+    <table class="table table-striped">
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>총액</th>
+            <th>주문일시</th>
+            <th style="width: 120px;" class="text-end"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <c:choose>
+
+            <c:when test="${empty purchaseList}">
+                <td colspan="4" class="text-center">주문 내역이 없습니다.</td>
+            </c:when>
+            <c:otherwise>
+                <c:forEach var="purchase" items="${purchaseList}">
+                <tr>
+                    <td>${purchase.purchase_id}</td>
+                    <td>${purchase.total_amount}</td>
+                    <td>${purchase.purchased_at}</td>
+
+                    <td>
+                        <a href="/purchaseInfo.do?purchase_id=${purchase.purchase_id}" class="btn btn-sm btn-primary">상세보기</a>
+                    </td>
+
+                </tr>
+            </c:forEach>
+            </c:otherwise>
+
+        </c:choose>
+
+        </tbody>
+
+    </table>
+
+<%--    purchasePage--%>
+    <div class="pagination">
+        <c:forEach var="i" begin="1" end="${purchaseTotalPages}">
+            <a href="?pointPage=${pointHistoryCurrentPage}&addressPage=${addressCurrentPage}&purchasePage=${i}" class="${i == purchaseCurrentPage ? 'active' : ''} page-link">${i}</a>
+        </c:forEach>
+    </div>
+
+</div>
 
 
 <%--   포인트 내역 조회  --%>
@@ -108,10 +161,10 @@
 
 </table>
 
-    <!-- 페이징 UI -->
+    <!-- pointHistory 페이징 UI -->
     <div class="pagination">
         <c:forEach var="i" begin="1" end="${pointHistoryTotalPages}">
-            <a href="?pointPage=${i}&addressPage=${addressCurrentPage}" class="${i == pointHistoryCurrentPage ? 'active' : ''} page-link">${i}</a>
+            <a href="?pointPage=${i}&addressPage=${addressCurrentPage}&purchasePage=${purchaseCurrentPage}" class="${i == pointHistoryCurrentPage ? 'active' : ''} page-link">${i}</a>
         </c:forEach>
     </div>
 
@@ -206,10 +259,10 @@
 
     </table>
 
-    <!-- 페이징 UI -->
+<%--    addressPage 페이징 UI --%>
     <div class="pagination">
         <c:forEach var="i" begin="1" end="${addressTotalPages}">
-            <a href="?pointPage=${pointHistoryCurrentPage}&addressPage=${i}" class="${i == addressCurrentPage ? 'active' : ''} page-link">${i}</a>
+            <a href="?pointPage=${pointHistoryCurrentPage}&addressPage=${i}&purchasePage=${purchaseCurrentPage}" class="${i == addressCurrentPage ? 'active' : ''} page-link">${i}</a>
         </c:forEach>
     </div>
 

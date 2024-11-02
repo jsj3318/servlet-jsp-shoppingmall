@@ -20,7 +20,7 @@ public class PointHistoryRepositoryImpl implements PointHistoryRepository {
         String sql = "select * " +
                 "from point_history " +
                 "where user_id = ? " +
-                "order by created_at desc";
+                "order by history_id desc";
 
         log.debug("sql:{}", sql);
 
@@ -132,7 +132,7 @@ public class PointHistoryRepositoryImpl implements PointHistoryRepository {
         String sql = "select * " +
                 "from point_history " +
                 "where user_id = ?" +
-                "order by created_at desc " +
+                "order by history_id desc " +
                 "limit ?,?";
 
         try(PreparedStatement psmt = connection.prepareStatement(sql)){
