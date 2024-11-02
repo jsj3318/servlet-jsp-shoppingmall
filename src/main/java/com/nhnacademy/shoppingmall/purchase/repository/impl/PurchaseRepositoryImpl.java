@@ -67,6 +67,36 @@ public class PurchaseRepositoryImpl implements PurchaseRepository {
     }
 
     @Override
+    public Purchase findById(int id) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+        String sql = "select * " +
+                "from purchase " +
+                "where purchase_id = ?";
+        log.debug("sql:{}",sql);
+
+        try(PreparedStatement psmt = connection.prepareStatement(sql)){
+            psmt.setInt(1, id);
+            ResultSet rs = psmt.executeQuery();
+
+            if (rs.next()){
+
+                return new Purchase(
+                        rs.getInt("purchase_id"),
+                        rs.getString("user_id"),
+                        rs.getTimestamp("purchased_at").toLocalDateTime(),
+                        rs.getString("destination"),
+                        rs.getBigDecimal("total_amount").toBigInteger()
+                );
+                
+            }
+
+        } catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    @Override
     public List<Purchase> findByUserId(String user_id) {
         Connection connection = DbConnectionThreadLocal.getConnection();
         String sql = "select * " +

@@ -1,6 +1,7 @@
 package com.nhnacademy.shoppingmall.purchase_product.repository.impl;
 
 import com.nhnacademy.shoppingmall.common.mvc.transaction.DbConnectionThreadLocal;
+import com.nhnacademy.shoppingmall.purchase_product.domain.PurchaseProduct;
 import com.nhnacademy.shoppingmall.purchase_product.repository.PurchaseProductRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -8,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class PurchaseProductRepositoryImpl implements PurchaseProductRepository {
@@ -53,6 +56,41 @@ public class PurchaseProductRepositoryImpl implements PurchaseProductRepository 
         }
 
         return 0;
+    }
+
+    @Override
+    public List<PurchaseProduct> findByPurchaseId(int id) {
+        Connection connection = DbConnectionThreadLocal.getConnection();
+
+        String sql = "select * " +
+                "from purchase_product " +
+                "where purchase_id = ? " +
+                "order by product_id desc";
+
+        log.debug("sql:{}",sql);
+
+        try( PreparedStatement psmt = connection.prepareStatement(sql);
+        ) {
+            psmt.setInt(1, id);
+            ResultSet rs = psmt.executeQuery();
+
+            List<PurchaseProduct> purchaseProductList = new ArrayList<>();
+            while(rs.next()){
+                purchaseProductList.add(
+                        new PurchaseProduct(
+                            rs.getInt("purchase_id"),
+                                rs.getInt("product_id"),
+                                rs.getInt("quantity")
+                        )
+                );
+            }
+
+            return purchaseProductList;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }

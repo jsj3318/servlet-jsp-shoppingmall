@@ -252,7 +252,8 @@ public class ProductRepositoryImpl implements ProductRepository {
         String sql = "select * " +
                 "from product p" +
                     "inner join purchase_product pp on pp.product_id = p.product_id " +
-                "where pp.purchase_id = ?";
+                "where pp.purchase_id = ? " +
+                "order by product_id desc";
 
         log.debug("sql:{}",sql);
 
