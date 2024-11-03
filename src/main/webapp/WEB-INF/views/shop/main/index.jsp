@@ -34,8 +34,31 @@
             </ul>
         </div>
 
-        <!-- 우측 상품 목록 -->
         <div class="col-md-9">
+            <!-- 최근 본 상품 목록 -->
+            <c:if test="${not empty recentProductList}">
+                <table class="table table-bordered mb-4">
+                    <thead>
+                    <tr>
+                        <th>최근 본 상품</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="product" items="${recentProductList}">
+                        <tr>
+                            <td>
+                                <a href="productPage.do?product_id=${product.product_id}">
+                                        ${product.product_name}
+                                </a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </c:if>
+
+
+        <!--  상품 목록 -->
             <h5>상품 목록</h5>
             <div class="row">
                 <c:forEach var="product" items="${productList}" varStatus="status">

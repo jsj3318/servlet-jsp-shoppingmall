@@ -1,15 +1,16 @@
 package com.nhnacademy.shoppingmall.recentViewService.impl;
 
-import com.nhnacademy.shoppingmall.common.page.Page;
 import com.nhnacademy.shoppingmall.common.util.CookieUtil;
 import com.nhnacademy.shoppingmall.recentViewService.RecentViewService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class RecentViewServiceImpl implements RecentViewService {
 
     public static final String RECENT_VIEW_COOKIE_NAME = "recent_view_product_list";
@@ -17,6 +18,15 @@ public class RecentViewServiceImpl implements RecentViewService {
     @Override
     public List<Integer> getList(HttpServletRequest req) {
         // 쿠키로 저장되어있는 상품 목록을 리스트로 반환한다
+
+        //쿠키 테스트
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                log.debug("Cookie Name: " + c.getName() + ", Value: " + c.getValue());
+            }
+        }
+
 
         Cookie cookie = CookieUtil.getCookie(req, RECENT_VIEW_COOKIE_NAME);
         if(cookie == null){
@@ -41,6 +51,9 @@ public class RecentViewServiceImpl implements RecentViewService {
             list = toList(cookie.getValue());
         }
 
+        // 리스트에 이미 해당 id가 존재할 경우 -> 해당 값을 지우고 다시 맨앞에 추가한다
+        list.remove(Integer.valueOf(product_id));
+
         // 리스트의 맨 앞에 새 id를 추가하고, 5개가 넘을경우 꼬리를 없앤다
         list.addFirst(product_id);
         if(list.size() > 5){
@@ -58,13 +71,13 @@ public class RecentViewServiceImpl implements RecentViewService {
     @Override
     public String toString(List<Integer> list) {
         // product_id가 담긴 리스트를 문자열로 변환
-        // {1, 2, 3} -> "1,2,3"
+        // {1, 2, 3} -> "1|2|3"
 
         String res = "";
         for(int i=0; i<list.size(); i++){
             res += list.get(i);
             if(i != list.size()-1){
-                res += ",";
+                res += "|";
             }
         }
 
@@ -74,9 +87,9 @@ public class RecentViewServiceImpl implements RecentViewService {
     @Override
     public List<Integer> toList(String str) {
         // 문자열을 리스트로 전환
-        // "1,2,3,4,5" -> {1,2,3,4,5}
+        // "1|2|3|4|5" -> {1,2,3,4,5}
         List<Integer> res = new ArrayList<>();
-        String[] arr = str.split(",");
+        String[] arr = str.split("\\|");
         for(String s : arr){
             res.add(Integer.valueOf(s));
         }

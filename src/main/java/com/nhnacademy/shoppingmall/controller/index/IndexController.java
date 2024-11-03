@@ -11,12 +11,15 @@ import com.nhnacademy.shoppingmall.common.util.UriUtil;
 import com.nhnacademy.shoppingmall.product.domain.Product;
 import com.nhnacademy.shoppingmall.product.repository.ProductRepository;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl;
+import com.nhnacademy.shoppingmall.recentViewService.RecentViewService;
+import com.nhnacademy.shoppingmall.recentViewService.impl.RecentViewServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.transaction.Transactional;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -46,6 +49,20 @@ public class IndexController implements BaseController {
         // 카테고리 불러오고 카테고리로 목록 만들기
         List<Category> categoryList = categoryRepository.findAll();
         req.setAttribute("categoryList", categoryList);
+
+
+        // 최근 본 상품 목록
+        // 최근 본 상품의 id 리스트를 불러온다
+        RecentViewService recentViewService = new RecentViewServiceImpl();
+        List<Integer> recentIdList = recentViewService.getList(req);
+        List<Product> recentProductList = new ArrayList<>();
+        if(recentIdList != null){
+            for(int id : recentIdList){
+                recentProductList.add(productRepository.findbyId(id).get());
+            }
+        }
+        req.setAttribute("recentProductList", recentProductList);
+
 
         // 상품 리스트 설정
         //커렌트 카테고리에 따라서 불러오기

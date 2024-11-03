@@ -10,6 +10,8 @@ import com.nhnacademy.shoppingmall.product.repository.ProductRepository;
 import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl;
 import com.nhnacademy.shoppingmall.product_category.ProductCategoryRepository;
 import com.nhnacademy.shoppingmall.product_category.impl.ProductCategoryRepositoryImpl;
+import com.nhnacademy.shoppingmall.recentViewService.RecentViewService;
+import com.nhnacademy.shoppingmall.recentViewService.impl.RecentViewServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -71,6 +73,13 @@ public class ProductPageController implements BaseController {
 
         req.setAttribute("product", product);
         log.debug("{} 상품 조회", product.getProduct_name());
+
+
+        // 최근 본 상품 쿠키에 해당 상품 추가하기
+        RecentViewService recentViewService = new RecentViewServiceImpl();
+        recentViewService.add(product_id, req, resp);
+
+
         return "shop/product/productpage";
     }
 
