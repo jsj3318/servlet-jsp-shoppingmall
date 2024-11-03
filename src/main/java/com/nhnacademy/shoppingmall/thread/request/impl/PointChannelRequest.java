@@ -40,8 +40,10 @@ public class PointChannelRequest extends ChannelRequest {
                     )
             );
 
-            // 유저 포인트 변화 db 적용
-            userRepository.update(user);
+        user.setUserPoint( user.getUserPoint() + payback );
+
+        // 유저 포인트 변화 db 적용
+        userRepository.update(user);
 
 
         DbConnectionThreadLocal.reset();

@@ -250,10 +250,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         Connection connection = DbConnectionThreadLocal.getConnection();
 
         String sql = "select * " +
-                "from product p" +
+                "from product p " +
                     "inner join purchase_product pp on pp.product_id = p.product_id " +
                 "where pp.purchase_id = ? " +
-                "order by product_id desc";
+                "order by p.product_id desc";
 
         log.debug("sql:{}",sql);
 

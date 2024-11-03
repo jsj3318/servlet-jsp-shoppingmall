@@ -120,7 +120,6 @@ public class PurchasePostController implements BaseController {
         // 유저 포인트 10% 페이백
         // 독립 thread 에서 처리
         int payback = (int)(totalPrice*0.1);
-        user.setUserPoint( user.getUserPoint() + payback );
         try {
             RequestChannel requestChannel = (RequestChannel) req.getServletContext().getAttribute(PointThreadInitializer.CONTEXT_REQUEST_CHANNEL_NAME);
             requestChannel.addRequest(new PointChannelRequest(payback, user));
