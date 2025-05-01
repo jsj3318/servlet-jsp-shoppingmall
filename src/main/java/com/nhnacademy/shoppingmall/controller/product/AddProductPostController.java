@@ -8,20 +8,15 @@ import com.nhnacademy.shoppingmall.product.repository.impl.ProductRepositoryImpl
 import com.nhnacademy.shoppingmall.product_category.ProductCategoryRepository;
 import com.nhnacademy.shoppingmall.product_category.impl.ProductCategoryRepositoryImpl;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import lombok.extern.slf4j.Slf4j;
-
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
-@MultipartConfig(
-        maxFileSize = 1024 * 1024 * 10,         //10MB
-        maxRequestSize = 1024 * 1024 * 30       //30MB
-)
+
 @Slf4j
 @Transactional
 @RequestMapping(method = RequestMapping.Method.POST, value = {"/addProduct.do"})

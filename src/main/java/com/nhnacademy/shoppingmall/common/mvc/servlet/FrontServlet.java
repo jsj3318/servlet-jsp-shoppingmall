@@ -6,6 +6,7 @@ import com.nhnacademy.shoppingmall.common.mvc.controller.BaseController;
 import com.nhnacademy.shoppingmall.common.mvc.controller.ControllerFactory;
 
 import com.nhnacademy.shoppingmall.controller.ControllerProxy;
+import jakarta.servlet.annotation.MultipartConfig;
 import lombok.extern.slf4j.Slf4j;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -16,6 +17,10 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+@MultipartConfig(
+        maxFileSize = 1024 * 1024 * 10,         //10MB
+        maxRequestSize = 1024 * 1024 * 30       //30MB
+)
 @Slf4j
 @WebServlet(name = "frontServlet",urlPatterns = {"*.do"})
 public class FrontServlet extends HttpServlet {

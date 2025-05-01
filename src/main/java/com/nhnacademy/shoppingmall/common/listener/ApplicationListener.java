@@ -25,12 +25,12 @@ public class ApplicationListener implements ServletContextListener {
 
         User admin = new User(
                 "admin", "marco", "12345", "10001225",
-                User.Auth.ROLE_ADMIN, 100_0000, LocalDateTime.now(), null
+                User.Auth.ROLE_ADMIN, 100_0000, LocalDateTime.now(), LocalDateTime.now().minusDays(1)
         );
 
         User user = new User(
                 "user", "jsj", "12345", "20000929",
-                User.Auth.ROLE_USER, 100_0000, LocalDateTime.now(), null
+                User.Auth.ROLE_USER, 100_0000, LocalDateTime.now(), LocalDateTime.now().minusDays(1)
         );
 
         if(userService.getUser(admin.getUserId()) == null){

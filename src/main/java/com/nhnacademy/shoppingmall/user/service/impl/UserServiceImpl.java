@@ -70,13 +70,16 @@ public class UserServiceImpl implements UserService {
     public User doLogin(String userId, String userPassword) {
         //todo#4-5 로그인 구현, userId, userPassword로 일치하는 회원 조회
 
+        LocalDateTime now = LocalDateTime.now();
+
         Optional<User> userOptional = userRepository.findByUserIdAndUserPassword(userId, userPassword);
 
         if(userOptional.isEmpty()){
             throw new UserNotFoundException(userId + " 로그인 실패");
         }
 
-        userRepository.updateLatestLoginAtByUserId(userId, LocalDateTime.now());
+        userRepository.updateLatestLoginAtByUserId(userId, now);
+
         return userOptional.get();
 
     }
